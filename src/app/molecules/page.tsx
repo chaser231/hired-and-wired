@@ -23,7 +23,7 @@ const initialNodes: NodeData[] = [
     type: 'trigger',
     title: 'Start Trigger',
     description: 'New Application received',
-    position: { x: 0, y: 0 },
+    position: { x: 24, y: 24 },
     inputs: 0,
     outputs: 1,
   },
@@ -32,7 +32,7 @@ const initialNodes: NodeData[] = [
     type: 'message',
     title: 'Send Welcome',
     description: 'Email to candidate',
-    position: { x: 250, y: 0 },
+    position: { x: 274, y: 24 },
     inputs: 1,
     outputs: 1,
   },
@@ -41,7 +41,7 @@ const initialNodes: NodeData[] = [
     type: 'checklist',
     title: 'Collect Documents',
     description: 'Passport, CV, Diploma',
-    position: { x: 500, y: 0 },
+    position: { x: 524, y: 24 },
     inputs: 1,
     outputs: 1,
   },
@@ -50,7 +50,7 @@ const initialNodes: NodeData[] = [
     type: 'condition',
     title: 'Check Status',
     description: 'Documents verified?',
-    position: { x: 750, y: 0 },
+    position: { x: 774, y: 24 },
     inputs: 1,
     outputs: 2,
   },
@@ -65,7 +65,7 @@ export default function MoleculesPage() {
     { src: '/assets/avatar-dog.png', alt: 'Dog' },
   ];
 
-  const [nodes] = useState<NodeData[]>(initialNodes);
+  const [nodes, setNodes] = useState<NodeData[]>(initialNodes);
   const [connections, setConnections] = useState<Connection[]>(initialConnections);
 
   return (
@@ -190,12 +190,13 @@ export default function MoleculesPage() {
         >
           <h2 className="text-h2 mb-[var(--space-m)]">Node Canvas</h2>
           <p className="text-grotesk mb-[var(--space-m)]" style={{ color: 'var(--color-gray-dark)' }}>
-            Drag from output connector (right) to input connector (left) to create connections
+            Drag nodes to reposition. Drag from output (right) to input (left) to connect.
           </p>
 
           <NodeCanvas
             nodes={nodes}
             connections={connections}
+            onNodesChange={setNodes}
             onConnectionsChange={setConnections}
           />
         </section>
