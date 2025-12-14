@@ -207,7 +207,7 @@ body {
 
 .text-bold {
   font-family: var(--font-akkurat);
-  font-size: var(--text-grotesk);
+  font-size: var(--text-h3);
   font-weight: 700;
   line-height: var(--leading-tight);
 }

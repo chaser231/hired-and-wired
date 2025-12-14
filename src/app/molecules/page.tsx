@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import {
   Profile,
   Node,
+  NodeCanvas,
   CampaignPreview,
   ProjectPreview,
   ExperiencePreview,
@@ -12,6 +14,49 @@ import {
   Notify,
   Attempt,
 } from '@/components/blocks';
+import { NodeData, Connection } from '@/types/automation';
+
+// Demo nodes for NodeCanvas
+const initialNodes: NodeData[] = [
+  {
+    id: 'node-1',
+    type: 'trigger',
+    title: 'Start Trigger',
+    description: 'New Application received',
+    position: { x: 0, y: 0 },
+    inputs: 0,
+    outputs: 1,
+  },
+  {
+    id: 'node-2',
+    type: 'message',
+    title: 'Send Welcome',
+    description: 'Email to candidate',
+    position: { x: 250, y: 0 },
+    inputs: 1,
+    outputs: 1,
+  },
+  {
+    id: 'node-3',
+    type: 'checklist',
+    title: 'Collect Documents',
+    description: 'Passport, CV, Diploma',
+    position: { x: 500, y: 0 },
+    inputs: 1,
+    outputs: 1,
+  },
+  {
+    id: 'node-4',
+    type: 'condition',
+    title: 'Check Status',
+    description: 'Documents verified?',
+    position: { x: 750, y: 0 },
+    inputs: 1,
+    outputs: 2,
+  },
+];
+
+const initialConnections: Connection[] = [];
 
 export default function MoleculesPage() {
   const avatarList = [
@@ -19,6 +64,9 @@ export default function MoleculesPage() {
     { src: '/assets/avatar-petya.png', alt: 'Petya' },
     { src: '/assets/avatar-dog.png', alt: 'Dog' },
   ];
+
+  const [nodes] = useState<NodeData[]>(initialNodes);
+  const [connections, setConnections] = useState<Connection[]>(initialConnections);
 
   return (
     <main
@@ -80,21 +128,76 @@ export default function MoleculesPage() {
           </div>
         </section>
 
-        {/* Node */}
+        {/* Node Types */}
         <section
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Node</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">Node Types</h2>
 
-          <div className="max-w-xs">
-            <Node
-              title="Start Trigger"
-              description="New Application received"
-              onPlay={() => {}}
-              onMore={() => {}}
-            />
+          <div className="grid grid-cols-4 gap-[var(--space-m)]">
+            <div>
+              <p className="text-caps mb-[var(--space-xs)]">Trigger</p>
+              <Node
+                id="demo-trigger"
+                type="trigger"
+                title="Start Trigger"
+                description="New Application received"
+                onPlay={() => {}}
+                onMore={() => {}}
+              />
+            </div>
+            <div>
+              <p className="text-caps mb-[var(--space-xs)]">Message</p>
+              <Node
+                id="demo-message"
+                type="message"
+                title="Send Welcome"
+                description="Email to candidate"
+                onPlay={() => {}}
+                onMore={() => {}}
+              />
+            </div>
+            <div>
+              <p className="text-caps mb-[var(--space-xs)]">Checklist</p>
+              <Node
+                id="demo-checklist"
+                type="checklist"
+                title="Collect Documents"
+                description="Passport, CV, Diploma"
+                onPlay={() => {}}
+                onMore={() => {}}
+              />
+            </div>
+            <div>
+              <p className="text-caps mb-[var(--space-xs)]">Condition</p>
+              <Node
+                id="demo-condition"
+                type="condition"
+                title="Check Status"
+                description="Documents verified?"
+                onPlay={() => {}}
+                onMore={() => {}}
+              />
+            </div>
           </div>
+        </section>
+
+        {/* Node Canvas */}
+        <section
+          className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
+          style={{ backgroundColor: 'var(--color-white)' }}
+        >
+          <h2 className="text-h2 mb-[var(--space-m)]">Node Canvas</h2>
+          <p className="text-grotesk mb-[var(--space-m)]" style={{ color: 'var(--color-gray-dark)' }}>
+            Drag from output connector (right) to input connector (left) to create connections
+          </p>
+
+          <NodeCanvas
+            nodes={nodes}
+            connections={connections}
+            onConnectionsChange={setConnections}
+          />
         </section>
 
         {/* Campaign Preview */}

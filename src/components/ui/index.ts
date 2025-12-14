@@ -11,3 +11,5 @@ export { Bar } from './Bar';
 export { Flag } from './Flag';
 export { ErrorBlock } from './Error';
 export { List, ListItem } from './List';
+export { NodeConnector } from './NodeConnector';
+export { Wire } from './Wire';

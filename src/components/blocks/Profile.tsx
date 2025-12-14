@@ -71,7 +71,7 @@ export function Profile({
   return (
     <div
       className={`
-        flex items-center gap-[var(--space-s)]
+        flex items-center justify-start gap-[var(--space-s)]
         p-[var(--space-s)]
         rounded-[var(--radius-sm)]
         ${className}
@@ -79,7 +79,7 @@ export function Profile({
       style={{ backgroundColor: bgColor }}
     >
       <Avatar src={avatarSrc} alt={name} size="md" />
-      <div>
+      <div className="flex flex-col gap-[var(--space-xs)]">
         <p className="text-bold">{name}</p>
         <p className="text-pixel">{role}</p>
       </div>
