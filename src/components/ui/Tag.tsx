@@ -10,19 +10,23 @@ interface TagProps {
 }
 
 export function Tag({ children, variant = 'static', onRemove, className = '' }: TagProps) {
+  const isControl = variant === 'control';
+
   return (
     <span
       className={`
-        inline-flex items-center gap-[var(--space-xxs)]
-        px-[var(--space-xs)] py-[var(--space-xxxs)]
-        bg-[var(--color-yellow-bright)]
+        inline-flex items-center justify-center gap-[10px]
         rounded-[var(--radius-sm)]
-        text-caps
+        text-pixel
+        ${isControl
+          ? 'px-[var(--space-xs)] h-6 bg-[var(--color-gray-light)]'
+          : 'px-[var(--space-s)] h-8 bg-[var(--color-yellow-bright)]'
+        }
         ${className}
       `.replace(/\s+/g, ' ').trim()}
     >
       {children}
-      {variant === 'control' && onRemove && (
+      {isControl && onRemove && (
         <button
           onClick={onRemove}
           className="hover:opacity-70 transition-opacity"

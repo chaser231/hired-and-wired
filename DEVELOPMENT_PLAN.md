@@ -271,4 +271,19 @@ src/
 ---
 
 ## Следующий шаг
-**→ Фаза 1: Инициализация Next.js проекта и настройка дизайн-токенов**
+**→ Фаза 3.1: Исправления Atoms по Figma**
+
+---
+
+## Фаза 3.1: Исправления Atoms
+**Статус**: ✅ Завершена
+
+### Исправления выполнены
+- [x] **Латиница везде** — все тексты на латинице
+- [x] **Button Node** — column layout с title + description
+- [x] **Status** — кружок 5x5 + текст: Rocket Growth, On Track, Failing
+- [x] **Tag** — control: bg #EAEAEA, h=24px; static: bg #FFFD9E, h=32px
+- [x] **Switch** — текстовый элемент с padding 14px, height 32px
+- [x] **SwitchGroup** — gap 2px, padding 4px, borderRadius 8px
+- [x] **Input/TextArea** — label 8px caps, input bg #EAEAEA, text-pixel
+- [x] **Bar** — кружки 5x5 с gap 2px, адаптивная ширина

@@ -5,6 +5,8 @@ type ButtonVariant = 'cta-big' | 'cta-small' | 'secondary' | 'color' | 'on-color
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   children: React.ReactNode;
+  /** For node variant - description text */
+  description?: string;
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
@@ -39,26 +41,48 @@ const variantStyles: Record<ButtonVariant, string> = {
     text-pixel
   `,
   node: `
-    px-[var(--space-s)] py-[var(--space-xs)]
+    p-[var(--space-s)]
     bg-[var(--color-coral)] text-[var(--color-black)]
     rounded-[var(--radius-sm)]
-    text-pixel
   `,
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'cta-small', children, className = '', ...props }, ref) => {
+  ({ variant = 'cta-small', children, description, className = '', ...props }, ref) => {
     const baseStyles = `
-      inline-flex items-center justify-center
       transition-opacity
       hover:opacity-80
       disabled:opacity-50 disabled:cursor-not-allowed
     `;
 
+    // Node variant has special layout
+    if (variant === 'node') {
+      return (
+        <button
+          ref={ref}
+          className={`
+            ${baseStyles}
+            ${variantStyles[variant]}
+            flex flex-col gap-[var(--space-xs)]
+            ${className}
+          `.replace(/\s+/g, ' ').trim()}
+          {...props}
+        >
+          <span className="text-bold">{children}</span>
+          {description && <span className="text-pixel">{description}</span>}
+        </button>
+      );
+    }
+
     return (
       <button
         ref={ref}
-        className={`${baseStyles} ${variantStyles[variant]} ${className}`.replace(/\s+/g, ' ').trim()}
+        className={`
+          ${baseStyles}
+          ${variantStyles[variant]}
+          inline-flex items-center justify-center
+          ${className}
+        `.replace(/\s+/g, ' ').trim()}
         {...props}
       >
         {children}

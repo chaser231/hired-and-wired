@@ -8,7 +8,6 @@ import {
   Status,
   Icon,
   Tag,
-  Switch,
   SwitchGroup,
   Input,
   TextArea,
@@ -21,9 +20,7 @@ import {
 } from '@/components/ui';
 
 export default function Home() {
-  const [switchOn, setSwitchOn] = useState(false);
-  const [switchBig, setSwitchBig] = useState(true);
-  const [switchGroup, setSwitchGroup] = useState('Все');
+  const [switchGroup, setSwitchGroup] = useState('All');
   const [dropdown, setDropdown] = useState('');
 
   const avatarList = [
@@ -45,7 +42,7 @@ export default function Home() {
         >
           <h1 className="text-h1">HR Assist</h1>
           <p className="text-h4 mt-[var(--space-xs)]" style={{ color: 'var(--color-gray-dark)' }}>
-            Дизайн-система — Atoms
+            Design System — Atoms
           </p>
         </header>
 
@@ -54,16 +51,18 @@ export default function Home() {
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Кнопки</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">Buttons</h2>
 
           <div className="space-y-[var(--space-m)]">
-            <div className="flex flex-wrap items-center gap-[var(--space-s)]">
+            <div className="flex flex-wrap items-start gap-[var(--space-s)]">
               <Button variant="cta-big">CTA Big</Button>
               <Button variant="cta-small">CTA Small</Button>
               <Button variant="secondary">Secondary</Button>
               <Button variant="color">Color</Button>
               <Button variant="on-color">On Color</Button>
-              <Button variant="node">Node</Button>
+              <Button variant="node" description="click to edit">
+                Node Title
+              </Button>
             </div>
 
             <div className="flex items-center gap-[var(--space-s)]">
@@ -79,11 +78,11 @@ export default function Home() {
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Аватары</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">Avatars</h2>
 
           <div className="flex items-center gap-[var(--space-l)]">
             <div className="space-y-[var(--space-xs)]">
-              <p className="text-caps">Размеры</p>
+              <p className="text-caps">Sizes</p>
               <div className="flex items-end gap-[var(--space-s)]">
                 <Avatar src="/assets/avatar-katya.png" alt="Katya" size="sm" />
                 <Avatar src="/assets/avatar-petya.png" alt="Petya" size="md" />
@@ -92,7 +91,7 @@ export default function Home() {
             </div>
 
             <div className="space-y-[var(--space-xs)]">
-              <p className="text-caps">Группа</p>
+              <p className="text-caps">Group</p>
               <Avatars avatars={avatarList} max={2} />
             </div>
           </div>
@@ -103,25 +102,13 @@ export default function Home() {
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Статусы</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">Status</h2>
 
-          <div className="flex items-center gap-[var(--space-m)]">
-            <div className="flex items-center gap-[var(--space-xs)]">
-              <Status variant="green" />
-              <span className="text-grotesk">Активен</span>
-            </div>
-            <div className="flex items-center gap-[var(--space-xs)]">
-              <Status variant="red" />
-              <span className="text-grotesk">Ошибка</span>
-            </div>
-            <div className="flex items-center gap-[var(--space-xs)]">
-              <Status variant="purple" />
-              <span className="text-grotesk">Рост</span>
-            </div>
-            <div className="flex items-center gap-[var(--space-xs)]">
-              <Status variant="stopped" />
-              <span className="text-grotesk">Остановлен</span>
-            </div>
+          <div className="flex flex-wrap items-center gap-[var(--space-m)]">
+            <Status variant="purple" showLabel />
+            <Status variant="green" showLabel />
+            <Status variant="red" showLabel />
+            <Status variant="stopped" showLabel />
           </div>
         </section>
 
@@ -130,7 +117,7 @@ export default function Home() {
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Иконки</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">Icons</h2>
 
           <div className="flex items-center gap-[var(--space-m)]">
             <div className="flex items-center gap-[var(--space-xs)]">
@@ -157,49 +144,29 @@ export default function Home() {
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Теги</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">Tags</h2>
 
           <div className="flex items-center gap-[var(--space-s)]">
-            <Tag>React</Tag>
-            <Tag>TypeScript</Tag>
+            <Tag variant="static">React</Tag>
+            <Tag variant="static">TypeScript</Tag>
             <Tag variant="control" onRemove={() => {}}>
-              Удаляемый
+              Removable
             </Tag>
           </div>
         </section>
 
-        {/* Switches */}
+        {/* Switch Group */}
         <section
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Переключатели</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">Switch Group</h2>
 
-          <div className="space-y-[var(--space-m)]">
-            <div className="flex items-center gap-[var(--space-m)]">
-              <div className="flex items-center gap-[var(--space-xs)]">
-                <Switch checked={switchOn} onChange={setSwitchOn} />
-                <span className="text-grotesk">Default</span>
-              </div>
-              <div className="flex items-center gap-[var(--space-xs)]">
-                <Switch checked={switchBig} onChange={setSwitchBig} size="big" />
-                <span className="text-grotesk">Big</span>
-              </div>
-              <div className="flex items-center gap-[var(--space-xs)]">
-                <Switch checked={false} onChange={() => {}} disabled />
-                <span className="text-grotesk">Disabled</span>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-caps mb-[var(--space-xs)]">Switch Group</p>
-              <SwitchGroup
-                options={['Все', 'Активные', 'Завершённые']}
-                value={switchGroup}
-                onChange={setSwitchGroup}
-              />
-            </div>
-          </div>
+          <SwitchGroup
+            options={['All', 'Active', 'Completed']}
+            value={switchGroup}
+            onChange={setSwitchGroup}
+          />
         </section>
 
         {/* Form Elements */}
@@ -207,29 +174,39 @@ export default function Home() {
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Форма</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">Form</h2>
 
           <div className="grid grid-cols-2 gap-[var(--space-m)]">
-            <Input label="Имя" placeholder="Введите имя" />
-            <Input label="С ошибкой" placeholder="Email" error="Неверный формат" />
+            <Input label="Name" placeholder="Michael Lee" />
+            <Input label="With Error" placeholder="Email" error="Invalid format" />
             <Dropdown
               options={[
-                { value: '1', label: 'Команда разработки' },
-                { value: '2', label: 'Команда дизайна' },
-                { value: '3', label: 'Команда маркетинга' },
+                { value: '1', label: 'Development Team' },
+                { value: '2', label: 'Design Team' },
+                { value: '3', label: 'Marketing Team' },
               ]}
               value={dropdown}
               onChange={setDropdown}
-              placeholder="Выберите команду"
+              placeholder="Select team"
             />
             <div>
-              <p className="text-caps mb-[var(--space-xxs)]" style={{ color: 'var(--color-gray-dark)' }}>
+              <p
+                className="mb-[var(--space-xs)]"
+                style={{
+                  fontFamily: 'var(--font-akkurat)',
+                  fontSize: '8px',
+                  fontWeight: 400,
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: 'var(--color-gray-dark)',
+                }}
+              >
                 Dropdown on color
               </p>
               <Dropdown
                 options={[
-                  { value: '1', label: 'Опция 1' },
-                  { value: '2', label: 'Опция 2' },
+                  { value: '1', label: 'Option 1' },
+                  { value: '2', label: 'Option 2' },
                 ]}
                 value=""
                 onChange={() => {}}
@@ -238,7 +215,7 @@ export default function Home() {
               />
             </div>
             <div className="col-span-2">
-              <TextArea label="Описание" placeholder="Введите описание..." />
+              <TextArea label="Description" placeholder="type something here" />
             </div>
           </div>
         </section>
@@ -252,7 +229,7 @@ export default function Home() {
 
           <div className="space-y-[var(--space-m)]">
             <div>
-              <p className="text-caps mb-[var(--space-xs)]">20%</p>
+              <p className="text-caps mb-[var(--space-xs)]">20% (Default)</p>
               <Bar progress={20} />
             </div>
             <div>
@@ -267,11 +244,11 @@ export default function Home() {
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Флаги и Ошибки</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">Flags & Errors</h2>
 
           <div className="flex items-start gap-[var(--space-xl)]">
             <div className="space-y-[var(--space-xs)]">
-              <p className="text-caps">Флаги</p>
+              <p className="text-caps">Flags</p>
               <div className="flex items-center gap-[var(--space-s)]">
                 <Flag variant="yes" />
                 <Flag variant="no" />
@@ -279,8 +256,8 @@ export default function Home() {
             </div>
 
             <div className="flex-1">
-              <p className="text-caps mb-[var(--space-xs)]">Блок ошибки</p>
-              <ErrorBlock message="Добавьте больше информации о зарплате" />
+              <p className="text-caps mb-[var(--space-xs)]">Error Block</p>
+              <ErrorBlock message="Add more details about salary" />
             </div>
           </div>
         </section>
@@ -290,21 +267,21 @@ export default function Home() {
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Список</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">List</h2>
 
           <List className="max-w-md">
-            <ListItem onClick={() => {}}>Элемент 1 (кликабельный)</ListItem>
-            <ListItem onClick={() => {}}>Элемент 2 (кликабельный)</ListItem>
-            <ListItem>Элемент 3 (статичный)</ListItem>
+            <ListItem onClick={() => {}}>Item 1 (clickable)</ListItem>
+            <ListItem onClick={() => {}}>Item 2 (clickable)</ListItem>
+            <ListItem>Item 3 (static)</ListItem>
           </List>
         </section>
 
-        {/* Colors Demo - Updated */}
+        {/* Colors Demo */}
         <section
           className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
-          <h2 className="text-h2 mb-[var(--space-m)]">Цвета</h2>
+          <h2 className="text-h2 mb-[var(--space-m)]">Colors</h2>
 
           <div className="space-y-[var(--space-m)]">
             {/* Base & Neutral */}
@@ -448,7 +425,7 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="text-center text-grotesk" style={{ color: 'var(--color-gray-dark)' }}>
-          <p>HR Assist MVP — Фаза 3: Atoms ✓</p>
+          <p>HR Assist MVP — Phase 3: Atoms</p>
         </footer>
       </div>
     </main>
