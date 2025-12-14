@@ -7,13 +7,14 @@ export function Notify({ message, className = '' }: NotifyProps) {
   return (
     <div
       className={`
-        p-[var(--space-m)]
+        flex flex-col gap-[var(--space-s)]
+        p-[var(--space-xl)]
         bg-[var(--color-mint)]
         rounded-[var(--radius-lg)]
         ${className}
       `.replace(/\s+/g, ' ').trim()}
     >
-      <p className="text-grotesk" style={{ color: 'var(--color-success)' }}>
+      <p className="text-description" style={{ color: 'var(--color-success)' }}>
         {message}
       </p>
     </div>

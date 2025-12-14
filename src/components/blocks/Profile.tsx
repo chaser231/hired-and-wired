@@ -80,7 +80,7 @@ export function Profile({
     >
       <Avatar src={avatarSrc} alt={name} size="md" />
       <div className="flex flex-col gap-[var(--space-xs)]">
-        <p className="text-bold">{name}</p>
+        <p className="text-bold" style={{ fontSize: '20px' }}>{name}</p>
         <p className="text-pixel">{role}</p>
       </div>
     </div>

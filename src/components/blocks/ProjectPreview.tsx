@@ -14,15 +14,14 @@ export function ProjectPreview({
   return (
     <div
       className={`
+        flex flex-col gap-[30px]
         p-[var(--space-s)]
-        bg-[var(--color-coral)]
-        border border-[var(--color-gray-light)]
-        rounded-[var(--radius-sm)]
+        border-t border-[var(--color-gray-light)]
         ${className}
       `.replace(/\s+/g, ' ').trim()}
     >
-      <p className="text-bold mb-[var(--space-s)]">{description}</p>
-      <div className="flex flex-wrap gap-[var(--space-xs)]">
+      <p className="text-bold">{description}</p>
+      <div className="flex flex-wrap gap-[2px]">
         {tags.map((tag) => (
           <Tag key={tag} variant="static">{tag}</Tag>
         ))}

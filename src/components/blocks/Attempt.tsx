@@ -1,19 +1,29 @@
+import { Status } from '../ui/Status';
+
 type AttemptVariant = 'past' | 'next';
+type StatusVariant = 'green' | 'red' | 'purple' | 'stopped';
+
+interface SalaryOffer {
+  amount: string;
+  benefits: string[];
+}
 
 interface AttemptProps {
   label: string;
-  date: string;
-  initialSalary: string;
-  finalSalary?: string;
+  leftOffer: SalaryOffer;
+  rightOffer: SalaryOffer;
+  status?: StatusVariant;
+  statusLabel?: string;
   variant?: AttemptVariant;
   className?: string;
 }
 
 export function Attempt({
   label,
-  date,
-  initialSalary,
-  finalSalary,
+  leftOffer,
+  rightOffer,
+  status,
+  statusLabel,
   variant = 'past',
   className = '',
 }: AttemptProps) {
@@ -22,37 +32,54 @@ export function Attempt({
   return (
     <div
       className={`
-        p-[var(--space-m)]
+        flex flex-col gap-[var(--space-l)]
+        p-[var(--space-xl)]
         rounded-[var(--radius-lg)]
-        ${isPast ? 'bg-[var(--color-white)]' : 'bg-[var(--color-yellow)]'}
+        bg-[var(--color-white)]
         ${className}
       `.replace(/\s+/g, ' ').trim()}
     >
-      <p className="text-pixel mb-[var(--space-s)]">{label}</p>
+      <p className="text-pixel">{label}</p>
       
-      <div className="space-y-[var(--space-xs)]">
-        <div className="flex items-center justify-between">
-          <span className="text-grotesk" style={{ color: 'var(--color-gray-dark)' }}>
-            Date
-          </span>
-          <span className="text-pixel">{date}</span>
+      <div className="flex justify-between gap-[60px]">
+        {/* Left Offer */}
+        <div className="flex flex-col gap-[var(--space-s)] w-[290px]">
+          <p className="text-h2">{leftOffer.amount}</p>
+          <div className="flex flex-col gap-[var(--space-xs)]">
+            {leftOffer.benefits.map((benefit, index) => (
+              <p 
+                key={index} 
+                className="text-pixel"
+                style={{ color: 'var(--color-gray-dark)' }}
+              >
+                {benefit}
+              </p>
+            ))}
+          </div>
         </div>
-        
-        <div className="flex items-center justify-between">
-          <span className="text-grotesk" style={{ color: 'var(--color-gray-dark)' }}>
-            Initial salary
-          </span>
-          <span className="text-pixel">{initialSalary}</span>
-        </div>
-        
-        {finalSalary && (
-          <div className="flex items-center justify-between">
-            <span className="text-grotesk" style={{ color: 'var(--color-gray-dark)' }}>
-              Final salary
-            </span>
-            <span className="text-pixel">{finalSalary}</span>
+
+        {/* Status (only for past variant) */}
+        {isPast && status && (
+          <div className="flex items-center">
+            <Status variant={status} showLabel label={statusLabel} />
           </div>
         )}
+
+        {/* Right Offer */}
+        <div className="flex flex-col items-end justify-start gap-[var(--space-s)] w-[290px]">
+          <p className="text-h2" style={{ textAlign: 'right' }}>{rightOffer.amount}</p>
+          <div className="flex flex-col gap-[var(--space-xs)]" style={{ textAlign: 'right' }}>
+            {rightOffer.benefits.map((benefit, index) => (
+              <p 
+                key={index} 
+                className="text-pixel"
+                style={{ color: 'var(--color-gray-dark)' }}
+              >
+                {benefit}
+              </p>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

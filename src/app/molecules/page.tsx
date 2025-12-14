@@ -293,19 +293,26 @@ export default function MoleculesPage() {
 
         {/* Attempt */}
         <section
-          className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
+          className="flex flex-col p-[var(--space-l)] rounded-[var(--radius-lg)]"
           style={{ backgroundColor: 'var(--color-white)' }}
         >
           <h2 className="text-h2 mb-[var(--space-m)]">Attempt</h2>
 
-          <div className="grid grid-cols-2 gap-[var(--space-m)]">
+          <div className="flex flex-col gap-[var(--space-m)]">
             <div>
               <p className="text-caps mb-[var(--space-xs)]">Past</p>
               <Attempt
                 label="first attempt"
-                date="12.03.2024"
-                initialSalary="$120,000"
-                finalSalary="$135,000"
+                leftOffer={{
+                  amount: '$8 750',
+                  benefits: ['Lead Role', 'Cookies', 'Free Education'],
+                }}
+                rightOffer={{
+                  amount: '$12 750',
+                  benefits: ['Lead Role', 'Remote-work', 'Gym'],
+                }}
+                status="red"
+                statusLabel="failed"
                 variant="past"
               />
             </div>
@@ -313,9 +320,15 @@ export default function MoleculesPage() {
             <div>
               <p className="text-caps mb-[var(--space-xs)]">Next</p>
               <Attempt
-                label="next attempt"
-                date="15.06.2024"
-                initialSalary="$140,000"
+                label="Next attempt"
+                leftOffer={{
+                  amount: '$?',
+                  benefits: ['Lead Role', 'Cookies', 'Gym'],
+                }}
+                rightOffer={{
+                  amount: '$?',
+                  benefits: ['Lead Role', 'Cookies', 'Gym'],
+                }}
                 variant="next"
               />
             </div>

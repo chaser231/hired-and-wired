@@ -26,23 +26,26 @@ export function Team({
   return (
     <div
       className={`
+        flex flex-wrap gap-[24px]
         p-[var(--space-m)]
         bg-[var(--color-white)]
         rounded-[var(--radius-lg)]
-        space-y-[var(--space-m)]
         ${className}
       `.replace(/\s+/g, ' ').trim()}
     >
       {/* Header */}
-      <div>
+      <div className="flex w-full justify-between">
         <p className="text-bold">{name}</p>
         <p className="text-pixel">{memberCount} people</p>
       </div>
 
       {/* Productivity */}
-      <div className="space-y-[var(--space-xs)]">
+      <div className="w-full space-y-[var(--space-xs)]">
         <div className="flex items-center justify-between">
-          <span className="text-grotesk" style={{ color: 'var(--color-gray-dark)' }}>
+          <span
+            className="text-grotesk uppercase"
+            style={{ color: 'var(--color-gray-dark)', letterSpacing: '2px', textTransform: 'uppercase' }}
+          >
             Productivity
           </span>
           <span className="text-grotesk">{productivity}%</span>
@@ -51,11 +54,16 @@ export function Team({
       </div>
 
       {/* Week highlight */}
-      <div>
-        <p className="text-grotesk" style={{ color: 'var(--color-gray-dark)' }}>
+      <div className="w-full">
+        <p
+          className="text-grotesk uppercase"
+          style={{ color: 'var(--color-gray-dark)', letterSpacing: '2px', textTransform: 'uppercase' }}
+        >
           Week highlight:
         </p>
-        <p className="text-pixel mt-[var(--space-xxs)]">{weekHighlight}</p>
+        <p className="text-pixel mt-[var(--space-xxs)]" style={{ fontSize: '11px' }}>
+          {weekHighlight}
+        </p>
       </div>
 
       {/* Members */}

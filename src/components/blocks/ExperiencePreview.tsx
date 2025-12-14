@@ -17,16 +17,14 @@ export function ExperiencePreview({
     <div
       className={`
         p-[var(--space-s)]
-        bg-[var(--color-coral)]
-        border border-[var(--color-gray-light)]
-        rounded-[var(--radius-sm)]
+        border-t border-[var(--color-gray-light)]
         ${className}
       `.replace(/\s+/g, ' ').trim()}
     >
       <p className="text-pixel mb-[var(--space-xs)]">{period}</p>
-      <div>
+      <div className="flex flex-col">
         <p className="text-bold">{title}</p>
-        <div className="mt-[var(--space-xxs)]">
+        <div className="flex flex-col mt-[var(--space-xxs)]">
           <p className="text-grotesk">{company}</p>
           <p className="text-grotesk mt-[var(--space-xxs)]">{description}</p>
         </div>
