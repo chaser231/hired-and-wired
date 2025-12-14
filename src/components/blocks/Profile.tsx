@@ -28,23 +28,38 @@ export function Profile({
     return (
       <div
         className={`
-          flex items-start gap-[var(--space-s)]
-          p-[var(--space-s)]
+          flex flex-col
+          py-[var(--space-s)]
           border-b border-[var(--color-gray-light)]
           ${className}
         `.replace(/\s+/g, ' ').trim()}
       >
-        <Avatar src={avatarSrc} alt={name} size="lg" />
-        <div className="flex-1 flex flex-col gap-[var(--space-xs)]">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-bold">{name}</p>
+        {/* Top row: Avatar + Content */}
+        <div className="flex gap-[var(--space-s)]">
+          {/* Avatar 30x30 */}
+          <div className="w-[30px] h-[30px] flex-shrink-0">
+            <Avatar src={avatarSrc} alt={name} size="md" className="w-full h-full" />
+          </div>
+          
+          {/* Content: Name/Role + Status */}
+          <div className="flex-1 flex justify-between gap-[var(--space-m)]">
+            {/* Name and Role */}
+            <div className="flex flex-col gap-[var(--space-xs)]">
+              <p className="text-h3">{name}</p>
               <p className="text-pixel">{role}</p>
             </div>
+            
+            {/* Status */}
             {status && <Status variant={status} showLabel />}
           </div>
-          {progress !== undefined && <Bar progress={progress} />}
         </div>
+        
+        {/* Progress Bar - full width */}
+        {progress !== undefined && (
+          <div className="mt-[var(--space-s)]">
+            <Bar progress={progress} variant="profile" />
+          </div>
+        )}
       </div>
     );
   }

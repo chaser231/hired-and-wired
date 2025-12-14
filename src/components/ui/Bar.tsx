@@ -3,10 +3,12 @@
 import { useRef, useEffect, useState } from 'react';
 
 type BarSize = 'default' | 'big';
+type BarVariant = 'default' | 'profile';
 
 interface BarProps {
   progress: number; // 0-100
   size?: BarSize;
+  variant?: BarVariant;
   className?: string;
 }
 
@@ -14,13 +16,17 @@ const DOT_SIZE = 5;
 const DOT_GAP = 2;
 const DOT_STEP = DOT_SIZE + DOT_GAP; // 7px
 
-export function Bar({ progress, size = 'default', className = '' }: BarProps) {
+export function Bar({ progress, size = 'default', variant = 'default', className = '' }: BarProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dotCount, setDotCount] = useState(0);
 
   const clampedProgress = Math.min(100, Math.max(0, progress));
   const isBig = size === 'big';
   const rows = isBig ? 2 : 1;
+
+  // Colors based on variant
+  const filledColor = variant === 'profile' ? 'var(--color-mint)' : 'var(--color-black)';
+  const emptyColor = '#B8C6C3';
 
   useEffect(() => {
     const updateDotCount = () => {
@@ -32,8 +38,13 @@ export function Bar({ progress, size = 'default', className = '' }: BarProps) {
     };
 
     updateDotCount();
-    window.addEventListener('resize', updateDotCount);
-    return () => window.removeEventListener('resize', updateDotCount);
+    
+    const resizeObserver = new ResizeObserver(updateDotCount);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+    
+    return () => resizeObserver.disconnect();
   }, [rows]);
 
   const filledCount = Math.round((clampedProgress / 100) * dotCount);
@@ -49,11 +60,11 @@ export function Bar({ progress, size = 'default', className = '' }: BarProps) {
       rowDots.push(
         <div
           key={i}
-          className="rounded-full"
+          className="rounded-full flex-shrink-0"
           style={{
             width: DOT_SIZE,
             height: DOT_SIZE,
-            backgroundColor: isFilled ? 'var(--color-black)' : '#B8C6C3',
+            backgroundColor: isFilled ? filledColor : emptyColor,
           }}
         />
       );
@@ -64,7 +75,7 @@ export function Bar({ progress, size = 'default', className = '' }: BarProps) {
   return (
     <div
       ref={containerRef}
-      className={`w-full bg-[var(--color-white)] ${className}`}
+      className={`w-full ${className}`}
     >
       {Array.from({ length: rows }).map((_, rowIndex) => (
         <div
