@@ -151,7 +151,7 @@ body {
 .text-h1 {
   font-family: var(--font-instrument);
   font-size: var(--text-h1);
-  font-weight: 700;
+  font-weight: 400;
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight-1);
 }
@@ -183,7 +183,7 @@ body {
 .text-description {
   font-family: var(--font-pixform);
   font-size: var(--text-description);
-  font-weight: 600;
+  font-weight: 400;
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight-3);
   text-transform: uppercase;
