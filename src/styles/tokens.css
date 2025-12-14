@@ -1,0 +1,94 @@
+/* HR Assist Design Tokens */
+
+:root {
+  /* ============================================
+     SPACING (Indents)
+     ============================================ */
+  --space-xxxs: 2px;
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-s: 14px;
+  --space-m: 20px;
+  --space-l: 24px;
+  --space-xl: 30px;
+  --space-xxl: 90px;
+
+  /* ============================================
+     COLORS - Base
+     ============================================ */
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-gray-bg: #F2F2F2;
+
+  /* ============================================
+     COLORS - Neutral
+     ============================================ */
+  --color-gray-light: #EAEAEA;
+  --color-gray-medium: #CBCBCB;
+  --color-gray-dark: #979797;
+
+  /* ============================================
+     COLORS - Accent
+     ============================================ */
+  --color-yellow: #FFE900;
+  --color-gold: #D1A63B;
+  --color-yellow-bright: #FFFD9E;
+
+  /* ============================================
+     COLORS - Semantic
+     ============================================ */
+  --color-success: #00867B;
+  --color-error: #CC0000;
+  --color-purple: #9747FF;
+
+  /* ============================================
+     COLORS - Card Backgrounds
+     ============================================ */
+  --color-pink-light: #F5CFCA;
+  --color-pink: #FAD5E7;
+  --color-coral: #F7E0DD;
+  --color-mint: #D4EEE7;
+  --color-purple-light: #DDD6EF;
+  --color-green-light: #E0E2A4;
+
+  /* ============================================
+     BORDER RADIUS
+     ============================================ */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+
+  /* ============================================
+     FONT FAMILIES
+     ============================================ */
+  --font-akkurat: 'Akkurat LL Cyrillic', sans-serif;
+  --font-instrument: 'Instrument Serif', serif;
+  --font-pixform: 'Pixform', sans-serif;
+
+  /* ============================================
+     FONT SIZES
+     ============================================ */
+  --text-h1: 84px;
+  --text-h2: 40px;
+  --text-h3: 20px;
+  --text-h4: 15px;
+  --text-description: 30px;
+  --text-pixel: 10px;
+  --text-grotesk: 11px;
+  --text-caps: 8px;
+
+  /* ============================================
+     LINE HEIGHTS
+     ============================================ */
+  --leading-tight: 0.9;
+  --leading-normal: 1.2;
+
+  /* ============================================
+     LETTER SPACING
+     ============================================ */
+  --tracking-tight-1: -0.01em;
+  --tracking-tight-2: -0.02em;
+  --tracking-tight-3: -0.03em;
+  --tracking-wide: 0.2em;
+}

@@ -1,0 +1,222 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+/* ============================================
+   FONT FACES
+   ============================================ */
+
+/* Akkurat LL Cyrillic */
+@font-face {
+  font-family: 'Akkurat LL Cyrillic';
+  src: url('/fonts/AkkuratLLCyr-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Akkurat LL Cyrillic';
+  src: url('/fonts/AkkuratLLCyr-ThinItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Akkurat LL Cyrillic';
+  src: url('/fonts/AkkuratLLCyr-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Akkurat LL Cyrillic';
+  src: url('/fonts/AkkuratLLCyr-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Akkurat LL Cyrillic';
+  src: url('/fonts/AkkuratLLCyr-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Akkurat LL Cyrillic';
+  src: url('/fonts/AkkuratLLCyr-RegularItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Akkurat LL Cyrillic';
+  src: url('/fonts/AkkuratLLCyr-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Akkurat LL Cyrillic';
+  src: url('/fonts/AkkuratLLCyr-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Akkurat LL Cyrillic';
+  src: url('/fonts/AkkuratLLCyr-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Akkurat LL Cyrillic';
+  src: url('/fonts/AkkuratLLCyr-BlackItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Instrument Serif */
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/InstrumentSerif-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/InstrumentSerif-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Pixform */
+@font-face {
+  font-family: 'Pixform';
+  src: url('/fonts/Pixform.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================
+   TAILWIND THEME OVERRIDES
+   ============================================ */
+
+@theme inline {
+  /* Colors */
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-black);
+  
+  /* Fonts */
+  --font-sans: var(--font-akkurat);
+  --font-serif: var(--font-instrument);
+  --font-pixel: var(--font-pixform);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--color-white);
+  color: var(--color-black);
+  font-family: var(--font-akkurat);
+  font-size: var(--text-grotesk);
+  line-height: var(--leading-normal);
+}
+
+/* ============================================
+   TYPOGRAPHY UTILITIES
+   ============================================ */
+
+.text-h1 {
+  font-family: var(--font-instrument);
+  font-size: var(--text-h1);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight-1);
+}
+
+.text-h2 {
+  font-family: var(--font-instrument);
+  font-size: var(--text-h2);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight-1);
+}
+
+.text-h3 {
+  font-family: var(--font-akkurat);
+  font-size: var(--text-h3);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight-2);
+}
+
+.text-h4 {
+  font-family: var(--font-akkurat);
+  font-size: var(--text-h4);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight-2);
+}
+
+.text-description {
+  font-family: var(--font-pixform);
+  font-size: var(--text-description);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight-3);
+  text-transform: uppercase;
+}
+
+.text-pixel {
+  font-family: var(--font-pixform);
+  font-size: var(--text-pixel);
+  font-weight: 400;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.text-grotesk {
+  font-family: var(--font-akkurat);
+  font-size: var(--text-grotesk);
+  font-weight: 400;
+  line-height: var(--leading-tight);
+}
+
+.text-bold {
+  font-family: var(--font-akkurat);
+  font-size: var(--text-grotesk);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+
+.text-caps {
+  font-family: var(--font-akkurat);
+  font-size: var(--text-caps);
+  font-weight: 500;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
