@@ -115,23 +115,25 @@ export default function AllTeamsPage() {
         />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center gap-[var(--space-xl)] pb-[var(--space-xl)]">
-          {/* Title */}
-          <div className="text-center">
-            <h1 className="text-h1">All teams</h1>
-            <p className="text-description mt-[var(--space-xl)]">
-              Overview of all teams
-              <br />
-              and their performance metrics
-            </p>
+        <div className="relative z-10 flex flex-col items-center justify-center gap-[160px] w-full max-w-[var(--content-width)] mt-[130px]">
+          {/* Title & Button */}
+          <div className="flex flex-col items-center gap-[var(--space-xl)]">
+            <div className="text-center">
+              <h1 className="text-h1">All teams</h1>
+              <p className="text-description mt-[var(--space-xl)]">
+                Overview of all teams
+                <br />
+                and their performance metrics
+              </p>
+            </div>
+
+            {/* Add Team Button */}
+            <Button variant="cta-small" onClick={() => router.push('/teams/new')}>
+              add team
+            </Button>
           </div>
 
-          {/* Add Team Button */}
-          <Button variant="cta-small" onClick={() => router.push('/teams/new')}>
-            add team
-          </Button>
-
-          {/* Tab Switcher */}
+          {/* Tab Switcher - at bottom */}
           <SwitchGroup
             options={['Overview', 'Employees', 'Report']}
             value={activeTab}
