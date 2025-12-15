@@ -165,7 +165,7 @@ src/
 - [x] Страница All Teams
 - [x] Карточка команды (Team component)
 - [x] Страница деталей команды
-- [ ] Форма создания команды
+- [x] Форма создания команды
 - [ ] Org Chart (tree view)
 
 ---
@@ -309,6 +309,8 @@ src/
   - Страница деталей команды (/teams/[id]): CardTop gray, Notify с аватарами, список Profile (long) с прогресс-барами
   - SecondRow с breadcrumbs интегрирован
   - Profile (long) обновлён — прогресс-бар на одной строке с данными
+  - Status nowrap — статусы в одну строку
+  - Форма создания команды (/teams/new): Input, TextArea, Dropdown, валидация
 
 ---
 
