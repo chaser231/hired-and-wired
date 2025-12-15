@@ -186,28 +186,31 @@ export function CardTop({
     return (
       <div
         className={`
-          relative overflow-hidden
+          relative
           flex flex-col justify-between
           h-[480px] p-[var(--space-xl)]
           rounded-[var(--radius-lg)]
           ${className}
         `.replace(/\s+/g, ' ').trim()}
       >
-        {/* Background Image */}
-        <Image
-          src={coverSrc}
-          alt={`${name} cover`}
-          fill
-          className="object-cover"
-        />
+        {/* Background Container with overflow hidden for rounded corners */}
+        <div className="absolute inset-0 overflow-hidden rounded-[var(--radius-lg)]">
+          {/* Background Image */}
+          <Image
+            src={coverSrc}
+            alt={`${name} cover`}
+            fill
+            className="object-cover"
+          />
 
-        {/* Yellow Overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to top, rgba(255, 183, 0, 0.95) 0%, rgba(255, 183, 0, 0.7) 50%, transparent 100%)',
-          }}
-        />
+          {/* Yellow Overlay */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to top, rgba(255, 183, 0, 0.95) 0%, rgba(255, 183, 0, 0.7) 50%, transparent 100%)',
+            }}
+          />
+        </div>
 
         {/* Content - relative to be above overlay */}
         <div className="relative z-10 flex flex-col justify-between h-full">

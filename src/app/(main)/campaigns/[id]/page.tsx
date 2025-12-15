@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { SecondRow, CardTop, Pipeline } from '@/components/sections';
 import { CampaignPreview } from '@/components/blocks';
@@ -29,11 +30,22 @@ export default function CampaignPage() {
   const params = useParams();
   const router = useRouter();
   const campaignId = params.id as string;
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const campaign = useCampaignsStore((state) => state.getCampaign(campaignId));
   const team = useTeamsStore((state) =>
     campaign ? state.getTeam(campaign.teamId) : undefined
   );
+
+  // Track scroll for SecondRow background
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Handle loading state
   if (!campaign) {
@@ -67,20 +79,28 @@ export default function CampaignPage() {
   };
 
   return (
-    <main className="flex flex-col items-center min-h-screen px-[var(--space-m)] bg-[var(--color-gray-bg)]">
-      {/* SecondRow */}
-      <SecondRow
-        variant="default"
-        breadcrumbs={[
-          { label: 'All teams', href: '/' },
-          { label: teamName, href: `/teams/${campaign.teamId}` },
-          { label: campaign.title },
-        ]}
-        onBack={() => router.back()}
-      />
+    <main className="flex flex-col items-center min-h-screen bg-[var(--color-gray-bg)]">
+      {/* SecondRow - fixed under TopMenu */}
+      <div
+        className="fixed top-[60px] left-0 right-0 z-40 transition-colors duration-200"
+        style={{
+          backgroundColor: isScrolled ? 'var(--color-white)' : 'transparent',
+          borderBottom: isScrolled ? '1px solid var(--color-gray-light)' : 'none',
+        }}
+      >
+        <SecondRow
+          variant="default"
+          breadcrumbs={[
+            { label: 'All teams', href: '/' },
+            { label: teamName, href: `/teams/${campaign.teamId}` },
+            { label: campaign.title },
+          ]}
+          onBack={() => router.back()}
+        />
+      </div>
 
       {/* Content Container */}
-      <div className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[104px]">
+      <div className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[104px] px-[var(--space-m)]">
         {/* CardTop */}
         <CardTop
           variant="yellow"
@@ -146,8 +166,8 @@ export default function CampaignPage() {
         />
       </div>
 
-      {/* Pipeline Section */}
-      <div className="w-full max-w-[var(--content-width)] mt-[var(--space-xl)] pb-[var(--page-gap)]">
+      {/* Pipeline Section - Full width with 30px padding */}
+      <div className="w-full mt-[var(--page-gap)] pb-[var(--page-gap)] px-[var(--space-xl)]">
         <Pipeline onCandidateClick={handleCandidateClick} />
       </div>
     </main>
