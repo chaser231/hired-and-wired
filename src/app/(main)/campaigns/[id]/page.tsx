@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { SecondRow, CardTop, Pipeline } from '@/components/sections';
 import { CampaignPreview } from '@/components/blocks';
-import { Button } from '@/components/ui';
 import { useCampaignsStore } from '@/lib/stores/campaignsStore';
 import { useTeamsStore } from '@/lib/stores/teamsStore';
 
@@ -16,7 +15,7 @@ interface MetricCardProps {
 
 function MetricCard({ title, value, label }: MetricCardProps) {
   return (
-    <div className="flex-1 flex flex-col gap-[var(--page-gap)] p-[var(--space-xl)] bg-[var(--color-white)] rounded-[var(--radius-lg)]">
+    <div className="flex-1 flex flex-col justify-between p-[var(--space-xl)] bg-[var(--color-white)] rounded-[var(--radius-lg)]" style={{ minHeight: '220px' }}>
       <h3 className="text-h2">{title}</h3>
       <div className="flex flex-col gap-[var(--space-xs)]">
         <p className="text-h1">{value}</p>
@@ -103,40 +102,15 @@ export default function CampaignPage() {
       <div className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[104px] px-[var(--space-m)]">
         {/* CardTop */}
         <CardTop
-          variant="yellow"
+          variant="campaign"
+          coverSrc="/assets/card top — копия 2.png"
           name={campaign.title}
           role="Active campaign"
-          showDropdowns={false}
-          customActions={
-            <div className="flex items-center gap-[var(--space-xxs)]">
-              <Button variant="cta-small" onClick={handleFinish}>
-                finish
-              </Button>
-              <Button variant="on-color" onClick={handleCancel}>
-                cancel
-              </Button>
-            </div>
-          }
-          topContent={
-            <div className="flex items-center gap-[var(--space-xxs)]">
-              <p className="text-pixel" style={{ color: 'var(--color-gold)' }}>
-                Docs
-              </p>
-            </div>
-          }
-          dropdownContent={
-            <div className="flex items-center gap-[var(--space-xxs)]">
-              <Button
-                variant="color"
-                className="!bg-[var(--color-gold)] !text-white"
-              >
-                docs for designers
-              </Button>
-              <Button variant="color" className="!bg-[var(--color-gold)]">
-                add
-              </Button>
-            </div>
-          }
+          topLabel="Docs"
+          actions={[
+            { label: 'finish', onClick: handleFinish, variant: 'cta-small' },
+            { label: 'cancel', onClick: handleCancel, variant: 'on-color' },
+          ]}
         />
 
         {/* Metrics Row */}

@@ -6,7 +6,7 @@ import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import { SwitchGroup } from '../ui/Switch';
 
-type CardTopVariant = 'yellow' | 'gray';
+type CardTopVariant = 'yellow' | 'gray' | 'campaign';
 
 interface DropdownOption {
   label: string;
@@ -30,7 +30,18 @@ interface CardTopProps {
   actions?: Array<{
     label: string;
     onClick?: () => void;
+    variant?: 'cta-small' | 'on-color';
   }>;
+  // For campaign variant
+  topLabel?: string;
+  bottomDropdown?: DropdownOption;
+  bottomDropdownOptions?: DropdownOption[];
+  onBottomDropdownChange?: (value: string) => void;
+  onAddClick?: () => void;
+  showDropdowns?: boolean;
+  customActions?: React.ReactNode;
+  topContent?: React.ReactNode;
+  dropdownContent?: React.ReactNode;
   className?: string;
 }
 
@@ -123,6 +134,13 @@ const defaultAccessOptions: DropdownOption[] = [
   { label: 'Access LEVEL 5 (TOP SECRET)', value: 'level5' },
 ];
 
+const defaultBottomDropdownOptions: DropdownOption[] = [
+  { label: 'docs for designers', value: 'designers' },
+  { label: 'docs for developers', value: 'developers' },
+  { label: 'docs for managers', value: 'managers' },
+  { label: 'general docs', value: 'general' },
+];
+
 export function CardTop({
   name,
   role,
@@ -148,12 +166,20 @@ export function CardTop({
     { label: 'suspend' },
     { label: 'fire' },
   ],
+  // Campaign variant props
+  topLabel = 'Docs',
+  bottomDropdown = { label: 'docs for designers', value: 'designers' },
+  bottomDropdownOptions = defaultBottomDropdownOptions,
+  onBottomDropdownChange,
+  onAddClick,
   className = '',
 }: CardTopProps) {
   const isYellow = variant === 'yellow';
+  const isCampaign = variant === 'campaign';
   const [activeSwitchIndex, setActiveSwitchIndex] = useState(selectedSwitch);
   const [teams, setTeams] = useState(teamsDropdowns);
   const [access, setAccess] = useState(accessDropdown);
+  const [selectedDoc, setSelectedDoc] = useState(bottomDropdown);
 
   const handleTeamChange = (index: number, value: string) => {
     const option = teamsOptions.find((o) => o.value === value);
@@ -181,6 +207,90 @@ export function CardTop({
       setTeams([...teams, unusedOption]);
     }
   };
+
+  const handleDocChange = (value: string) => {
+    const option = bottomDropdownOptions.find((o) => o.value === value);
+    if (option) {
+      setSelectedDoc(option);
+      onBottomDropdownChange?.(value);
+    }
+  };
+
+  // Campaign variant - similar to yellow but with different layout
+  if (isCampaign) {
+    return (
+      <div
+        className={`
+          relative
+          flex flex-col justify-between
+          h-[480px] p-[var(--space-xl)]
+          rounded-[var(--radius-lg)]
+          ${className}
+        `.replace(/\s+/g, ' ').trim()}
+      >
+        {/* Background Container with overflow hidden for rounded corners */}
+        <div className="absolute inset-0 overflow-hidden rounded-[var(--radius-lg)]">
+          {/* Background Image */}
+          <Image
+            src={coverSrc}
+            alt={`${name} cover`}
+            fill
+            className="object-cover"
+          />
+
+          {/* Yellow Overlay */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to top, rgba(255, 183, 0, 0.95) 0%, rgba(255, 183, 0, 0.7) 50%, transparent 100%)',
+            }}
+          />
+        </div>
+
+        {/* Content - relative to be above overlay */}
+        <div className="relative z-10 flex flex-col justify-between h-full">
+          {/* Top Row - Label */}
+          <div className="flex justify-start">
+            <span className="text-pixel" style={{ color: 'var(--color-gold)' }}>{topLabel}</span>
+          </div>
+
+          {/* Center - Name & Role & Actions */}
+          <div className="flex flex-col items-center text-center">
+            <h1 className="text-h1">{name}</h1>
+            <p className="text-description mt-[var(--space-xs)]" style={{ color: 'var(--color-gold)' }}>
+              {role}
+            </p>
+
+            {/* Action Buttons - Finish (black) and Cancel (white) */}
+            <div className="flex gap-[2px] mt-[var(--space-m)]">
+              {actions.map((action) => (
+                <Button
+                  key={action.label}
+                  variant={action.variant || 'cta-small'}
+                  onClick={action.onClick}
+                >
+                  {action.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom Row - Single dropdown with add button */}
+          <div className="flex items-end">
+            <div className="flex items-center gap-[2px]">
+              <OnColorDropdown
+                value={selectedDoc}
+                options={bottomDropdownOptions}
+                onChange={handleDocChange}
+                color="gold"
+              />
+              <Button variant="color" onClick={onAddClick}>add</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (isYellow) {
     return (
