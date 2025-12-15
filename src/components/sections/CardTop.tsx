@@ -293,6 +293,9 @@ export function CardTop({
   }
 
   if (isYellow) {
+    const hasActions = actions && actions.length > 0;
+    const showControls = hasActions; // Only show dropdowns if there are actions
+
     return (
       <div
         className={`
@@ -323,12 +326,14 @@ export function CardTop({
         </div>
 
         {/* Content - relative to be above overlay */}
-        <div className="relative z-10 flex flex-col justify-between h-full">
-          {/* Top Row - Labels */}
-          <div className="flex justify-between">
-            <span className="text-pixel" style={{ color: 'var(--color-gold)' }}>TEAMS</span>
-            <span className="text-pixel" style={{ color: 'var(--color-gold)' }}>access</span>
-          </div>
+        <div className="relative z-10 flex flex-col justify-center h-full">
+          {/* Top Row - Labels (only if showing controls) */}
+          {showControls && (
+            <div className="absolute top-[var(--space-xl)] left-[var(--space-xl)] right-[var(--space-xl)] flex justify-between">
+              <span className="text-pixel" style={{ color: 'var(--color-gold)' }}>TEAMS</span>
+              <span className="text-pixel" style={{ color: 'var(--color-gold)' }}>access</span>
+            </div>
+          )}
 
           {/* Center - Name & Role & Actions */}
           <div className="flex flex-col items-center text-center">
@@ -337,47 +342,51 @@ export function CardTop({
               {role}
             </p>
 
-            {/* Action Buttons - White */}
-            <div className="flex gap-[2px] mt-[var(--space-m)]">
-              {actions.map((action) => (
-                <Button
-                  key={action.label}
-                  variant="on-color"
-                  onClick={action.onClick}
-                >
-                  {action.label}
-                </Button>
-              ))}
-            </div>
+            {/* Action Buttons - White (only if has actions) */}
+            {hasActions && (
+              <div className="flex gap-[2px] mt-[var(--space-m)]">
+                {actions.map((action) => (
+                  <Button
+                    key={action.label}
+                    variant="on-color"
+                    onClick={action.onClick}
+                  >
+                    {action.label}
+                  </Button>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Bottom Row - Dropdowns */}
-          <div className="flex justify-between items-end">
-            {/* Left - Teams dropdowns */}
-            <div className="flex flex-wrap gap-[2px]" style={{ maxWidth: '310px' }}>
-              {teams.map((item, index) => (
+          {/* Bottom Row - Dropdowns (only if showing controls) */}
+          {showControls && (
+            <div className="absolute bottom-[var(--space-xl)] left-[var(--space-xl)] right-[var(--space-xl)] flex justify-between items-end">
+              {/* Left - Teams dropdowns */}
+              <div className="flex flex-wrap gap-[2px]" style={{ maxWidth: '310px' }}>
+                {teams.map((item, index) => (
+                  <OnColorDropdown
+                    key={`${item.value}-${index}`}
+                    value={item}
+                    options={teamsOptions}
+                    onChange={(val) => handleTeamChange(index, val)}
+                    color="gold"
+                  />
+                ))}
+                <Button variant="color" onClick={handleAddTeam}>add</Button>
+              </div>
+
+              {/* Right - Access dropdown */}
+              <div className="flex flex-wrap justify-end gap-[2px]" style={{ maxWidth: '175px' }}>
                 <OnColorDropdown
-                  key={`${item.value}-${index}`}
-                  value={item}
-                  options={teamsOptions}
-                  onChange={(val) => handleTeamChange(index, val)}
+                  value={access}
+                  options={accessOptions}
+                  onChange={handleAccessChange}
                   color="gold"
                 />
-              ))}
-              <Button variant="color" onClick={handleAddTeam}>add</Button>
+                <Button variant="color">add</Button>
+              </div>
             </div>
-
-            {/* Right - Access dropdown */}
-            <div className="flex flex-wrap justify-end gap-[2px]" style={{ maxWidth: '175px' }}>
-              <OnColorDropdown
-                value={access}
-                options={accessOptions}
-                onChange={handleAccessChange}
-                color="gold"
-              />
-              <Button variant="color">add</Button>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     );
