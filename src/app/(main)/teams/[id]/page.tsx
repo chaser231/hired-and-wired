@@ -7,34 +7,7 @@ import { SwitchGroup, Button } from '@/components/ui';
 import { Profile, Notify, CampaignPreview } from '@/components/blocks';
 import { SecondRow } from '@/components/sections';
 import { useTeamsStore } from '@/lib/stores/teamsStore';
-
-// Mock campaigns data for teams
-const mockCampaigns = [
-  {
-    id: '1',
-    title: 'Forward Architect',
-    status: 'green' as const,
-    stats: { applied: 45, rejected: 12, inProgress: 98, finalRound: 112, offersSent: 6 },
-  },
-  {
-    id: '2',
-    title: 'District Integration Engineer',
-    status: 'green' as const,
-    stats: { applied: 78, rejected: 7, inProgress: 89, finalRound: 34, offersSent: 1 },
-  },
-  {
-    id: '3',
-    title: 'Dynamic Program Liaison',
-    status: 'green' as const,
-    stats: { applied: 23, rejected: 678, inProgress: 8, finalRound: 90, offersSent: 45 },
-  },
-  {
-    id: '4',
-    title: 'Product Tactics Manager',
-    status: 'green' as const,
-    stats: { applied: 15, rejected: 5, inProgress: 167, finalRound: 90, offersSent: 2 },
-  },
-];
+import { useCampaignsStore } from '@/lib/stores/campaignsStore';
 
 export default function TeamDetailPage() {
   const router = useRouter();
@@ -42,6 +15,9 @@ export default function TeamDetailPage() {
   const teamId = params.id as string;
   
   const team = useTeamsStore((state) => state.getTeam(teamId));
+  const getCampaignsByTeam = useCampaignsStore((state) => state.getCampaignsByTeam);
+  const teamCampaigns = getCampaignsByTeam(teamId);
+  
   const [activeTab, setActiveTab] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -74,7 +50,13 @@ export default function TeamDetailPage() {
   // Tab-specific content
   const getNotifyMessage = () => {
     if (activeTab === 1) {
-      return 'This month, the hiring funnel saw 250 applicants, 50 interviews, and 10 new hires.';
+      if (teamCampaigns.length === 0) {
+        return 'Start your first hiring campaign to track applicants and interviews.';
+      }
+      const totalApplied = teamCampaigns.reduce((sum, c) => sum + c.stats.applied, 0);
+      const totalInterviews = teamCampaigns.reduce((sum, c) => sum + c.stats.inProgress + c.stats.finalRound, 0);
+      const totalHires = teamCampaigns.reduce((sum, c) => sum + c.stats.offersSent, 0);
+      return `This month, the hiring funnel saw ${totalApplied} applicants, ${totalInterviews} interviews, and ${totalHires} new hires.`;
     }
     return team.weekHighlight;
   };
@@ -106,9 +88,27 @@ export default function TeamDetailPage() {
         );
 
       case 1: // Campaigns tab
+        if (teamCampaigns.length === 0) {
+          return (
+            <div
+              className="flex flex-col items-center justify-center gap-[var(--space-m)] p-[var(--space-xxl)] rounded-[var(--radius-lg)]"
+              style={{ backgroundColor: 'var(--color-white)' }}
+            >
+              <p className="text-h3" style={{ color: 'var(--color-gray-dark)' }}>
+                No campaigns yet
+              </p>
+              <p className="text-grotesk" style={{ color: 'var(--color-gray-medium)' }}>
+                Create your first hiring campaign to start recruiting
+              </p>
+              <Button variant="cta-small" onClick={() => router.push('/campaigns/new')}>
+                add campaign
+              </Button>
+            </div>
+          );
+        }
         return (
           <>
-            {mockCampaigns.map((campaign) => (
+            {teamCampaigns.map((campaign) => (
               <CampaignPreview
                 key={campaign.id}
                 title={campaign.title}
