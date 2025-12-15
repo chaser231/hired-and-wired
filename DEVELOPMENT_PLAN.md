@@ -159,14 +159,14 @@ src/
 ---
 
 ## Фаза 7: Teams Module
-**Статус**: ⏳ В процессе
+**Статус**: ✅ Завершена
 
 ### Задачи
 - [x] Страница All Teams
 - [x] Карточка команды (Team component)
 - [x] Страница деталей команды
 - [x] Форма создания команды
-- [ ] Org Chart (tree view)
+- [x] Org Chart (tree view)
 
 ---
 
@@ -313,6 +313,8 @@ src/
   - Форма создания команды (/teams/new): Input, TextArea, Dropdown, валидация
   - Zustand store для teams с persist в localStorage
   - Полный CRUD flow: создание команд → отображение на главной → детали команды
+  - Org Chart (/org-chart): древовидная структура организации с OrgNode компонентом
+  - Collapsible nodes, линии связи, root выделен жёлтым
 
 ---
 
