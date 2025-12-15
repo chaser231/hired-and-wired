@@ -115,7 +115,7 @@ export default function AllTeamsPage() {
         />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center gap-[160px] w-full max-w-[var(--content-width)] mt-[130px]">
+        <div className="relative z-10 flex flex-col items-center justify-center gap-[160px] w-full max-w-[var(--content-width)] mt-[130px] pb-[var(--space-xl)]">
           {/* Title & Button */}
           <div className="flex flex-col items-center gap-[var(--space-xl)]">
             <div className="text-center">

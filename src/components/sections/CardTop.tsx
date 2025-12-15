@@ -298,7 +298,7 @@ export function CardTop({
       />
 
       {/* Content - relative to be above overlay */}
-      <div className="relative z-10 flex flex-col items-center gap-[var(--space-xl)]">
+      <div className="relative z-10 flex flex-col items-center gap-[var(--space-xl)] pb-[var(--space-xl)]">
         {/* Profile Info */}
         <div className="flex flex-col items-center text-center">
           {/* Name & Role */}
