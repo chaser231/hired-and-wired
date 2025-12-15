@@ -164,7 +164,7 @@ src/
 ### Задачи
 - [x] Страница All Teams
 - [x] Карточка команды (Team component)
-- [ ] Страница деталей команды
+- [x] Страница деталей команды
 - [ ] Форма создания команды
 - [ ] Org Chart (tree view)
 
@@ -301,11 +301,14 @@ src/
 - ✅ **Фаза 6 завершена — Layouts:**
   - MainLayout с TopMenu для (main) route group
   - Routing структура настроена
-- ⏳ **Фаза 7 начата — Teams Module:**
+- ⏳ **Фаза 7 продолжается — Teams Module:**
   - Страница All Teams: hero-секция с обложкой, метрики, сетка команд
   - Layout tokens добавлены (content-width: 830px, page-gap, section-gap)
   - CardMetric обновлён для поддержки разных цветов фона
   - Team компонент обновлён с поддержкой ссылок и улучшенной типографикой
+  - Страница деталей команды (/teams/[id]): CardTop gray, Notify с аватарами, список Profile (long) с прогресс-барами
+  - SecondRow с breadcrumbs интегрирован
+  - Profile (long) обновлён — прогресс-бар на одной строке с данными
 
 ---
 
