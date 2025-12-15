@@ -311,6 +311,8 @@ src/
   - Profile (long) обновлён — прогресс-бар на одной строке с данными
   - Status nowrap — статусы в одну строку
   - Форма создания команды (/teams/new): Input, TextArea, Dropdown, валидация
+  - Zustand store для teams с persist в localStorage
+  - Полный CRUD flow: создание команд → отображение на главной → детали команды
 
 ---
 
