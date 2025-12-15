@@ -275,7 +275,7 @@ export function CardTop({
     <div
       className={`
         relative overflow-hidden
-        flex flex-col justify-center items-center gap-[160px]
+        flex flex-col justify-end items-center
         h-[480px] p-[var(--space-xl)]
         rounded-[var(--radius-lg)]
         ${className}
@@ -298,9 +298,9 @@ export function CardTop({
       />
 
       {/* Content - relative to be above overlay */}
-      <div className="relative z-10 flex flex-col items-center justify-center gap-[var(--space-xl)]">
+      <div className="relative z-10 flex flex-col items-center gap-[var(--space-xl)]">
         {/* Profile Info */}
-        <div className="flex flex-col items-center justify-center text-center">
+        <div className="flex flex-col items-center text-center">
           {/* Name & Role */}
           <h1 className="text-h1">{name}</h1>
           <p className="text-description mt-[var(--space-xs)]">
@@ -321,7 +321,7 @@ export function CardTop({
           </div>
         </div>
 
-        {/* Switch Group - centered */}
+        {/* Switch Group - at bottom */}
         <SwitchGroup
           options={switchOptions}
           value={activeSwitchIndex}

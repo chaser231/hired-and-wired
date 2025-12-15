@@ -33,7 +33,7 @@ export function TopMenu({
         flex items-center justify-between
         px-[var(--space-m)] py-[var(--space-s)]
         border-b transition-colors duration-200
-        ${isScrolled ? 'bg-[var(--color-white)] border-[var(--color-gray-light)]' : 'bg-transparent border-transparent'}
+        ${isScrolled ? 'bg-[var(--color-white)] border-[var(--color-gray-light)]' : 'bg-transparent border-[var(--color-white)]'}
         ${className}
       `.replace(/\s+/g, ' ').trim()}
     >
