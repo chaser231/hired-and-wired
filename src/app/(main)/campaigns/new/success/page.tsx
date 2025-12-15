@@ -37,7 +37,7 @@ export default function CampaignSuccessPage() {
           {/* Icon Check */}
           <div
             className="flex items-center justify-center w-[120px] h-[120px] rounded-full"
-            style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
           >
             <svg
               width="60"
@@ -48,7 +48,7 @@ export default function CampaignSuccessPage() {
             >
               <path
                 d="M15 32L25 42L45 18"
-                stroke="white"
+                stroke="black"
                 strokeWidth="4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -58,12 +58,12 @@ export default function CampaignSuccessPage() {
 
           {/* Text */}
           <div className="flex flex-col items-center gap-[var(--space-xl)]">
-            <h1 className="text-h1" style={{ color: 'var(--color-white)' }}>
+            <h1 className="text-h1" style={{ color: 'var(--color-black)' }}>
               Campaign Published!
             </h1>
             <p
               className="text-description"
-              style={{ color: 'rgba(255, 255, 255, 0.8)' }}
+              style={{ color: 'var(--color-black)' }}
             >
               Your hiring campaign is now live
             </p>
