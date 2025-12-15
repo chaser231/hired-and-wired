@@ -94,9 +94,9 @@ export default function AllTeamsPage() {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <main className="flex flex-col items-center gap-[var(--page-gap)] pb-[84px]">
+    <main className="flex flex-col items-center pb-[84px]">
       {/* Hero Section - Full Width, starts from top (under header) */}
-      <section className="relative w-full h-[540px] flex flex-col items-center justify-end overflow-hidden">
+      <section className="relative w-full h-[580px] flex flex-col items-center justify-end overflow-hidden">
         {/* Background Image */}
         <Image
           src="/assets/Cover Image.jpg"
@@ -143,7 +143,7 @@ export default function AllTeamsPage() {
       </section>
 
       {/* Content Section - 830px Width */}
-      <section className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)]">
+      <section className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[var(--section-gap)]">
         {/* Metrics Row */}
         <div className="flex gap-[var(--section-gap)]">
           {metricsData.map((metric, index) => (
