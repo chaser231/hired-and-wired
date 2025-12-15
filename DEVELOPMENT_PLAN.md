@@ -171,11 +171,11 @@ src/
 ---
 
 ## Фаза 8: Hiring Campaigns
-**Статус**: ⏳ Ожидает
+**Статус**: ⏳ В процессе
 
 ### Задачи
-- [ ] Список кампаний найма
-- [ ] CampaignPreview в списке
+- [x] CampaignPreview в списке (вкладка Campaigns на странице команды)
+- [ ] Страница списка всех кампаний (/campaigns)
 - [ ] Wizard создания кампании
 - [ ] Canban для Pipeline
 - [ ] Профиль кандидата
@@ -315,6 +315,10 @@ src/
   - Полный CRUD flow: создание команд → отображение на главной → детали команды
   - Org Chart (/org-chart): древовидная структура организации с OrgNode компонентом
   - Collapsible nodes, линии связи, root выделен жёлтым
+- ⏳ **Фаза 8 начата — Hiring Campaigns:**
+  - Вкладка Campaigns на странице команды с CampaignPreview карточками
+  - CampaignPreview обновлён: gap 90px, отдельные ряды для чисел и лейблов
+  - Notify с hiring funnel статистикой
 
 ---
 
