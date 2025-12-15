@@ -95,8 +95,8 @@ export default function AllTeamsPage() {
 
   return (
     <main className="flex flex-col items-center gap-[var(--page-gap)] pb-[84px]">
-      {/* Hero Section - Full Width */}
-      <section className="relative w-full h-[480px] flex flex-col items-center justify-end overflow-hidden">
+      {/* Hero Section - Full Width, starts from top (under header) */}
+      <section className="relative w-full h-[540px] flex flex-col items-center justify-end overflow-hidden">
         {/* Background Image */}
         <Image
           src="/assets/Cover Image.jpg"

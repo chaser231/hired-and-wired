@@ -53,6 +53,7 @@ export function CardMetric({
       className={`
         flex flex-col gap-[var(--space-l)]
         flex-1
+        h-[195px]
         p-[var(--space-xl)]
         rounded-[var(--radius-lg)]
         ${className}
@@ -61,7 +62,7 @@ export function CardMetric({
     >
       <p className="text-bold">{title}</p>
       <div className="flex flex-col gap-[var(--space-xs)] flex-1">
-        <Graph bars={graphBars} className="flex-1" />
+        <Graph bars={graphBars} />
         {summary && (
           <p className="text-pixel">{summary}</p>
         )}
