@@ -29,16 +29,18 @@ const variantStyles: Record<ButtonVariant, string> = {
     text-pixel
   `,
   color: `
-    px-[var(--space-m)] py-[var(--space-xs)]
+    px-[var(--space-s)] py-[var(--space-xs)]
     bg-[var(--color-gold)] text-[var(--color-white)]
     rounded-[var(--radius-full)]
     text-pixel
+    h-8
   `,
   'on-color': `
-    px-[var(--space-m)] py-[var(--space-xs)]
+    px-[var(--space-s)] py-[var(--space-xs)]
     bg-[var(--color-white)] text-[var(--color-black)]
     rounded-[var(--radius-full)]
     text-pixel
+    h-8
   `,
   node: `
     p-[var(--space-s)]
@@ -92,3 +94,4 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = 'Button';
+

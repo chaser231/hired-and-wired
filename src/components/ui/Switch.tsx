@@ -40,8 +40,8 @@ export function Switch({
 
 interface SwitchGroupProps {
   options: string[];
-  value: string;
-  onChange: (value: string) => void;
+  value: number;
+  onChange: (index: number) => void;
   className?: string;
 }
 
@@ -56,14 +56,15 @@ export function SwitchGroup({ options, value, onChange, className = '' }: Switch
         ${className}
       `.replace(/\s+/g, ' ').trim()}
     >
-      {options.map((option) => (
+      {options.map((option, index) => (
         <Switch
-          key={option}
-          checked={value === option}
-          onChange={() => onChange(option)}
+          key={index}
+          checked={value === index}
+          onChange={() => onChange(index)}
           label={option}
         />
       ))}
     </div>
   );
 }
+
