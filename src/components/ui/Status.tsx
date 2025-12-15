@@ -25,7 +25,7 @@ export function Status({ variant, showLabel = false, label: customLabel, classNa
           className="w-[5px] h-[5px] rounded-full"
           style={{ backgroundColor: color }}
         />
-        <span className="text-pixel" style={{ color }}>
+        <span className="text-pixel whitespace-nowrap" style={{ color }}>
           {displayLabel}
         </span>
       </div>
@@ -39,3 +39,4 @@ export function Status({ variant, showLabel = false, label: customLabel, classNa
     />
   );
 }
+
