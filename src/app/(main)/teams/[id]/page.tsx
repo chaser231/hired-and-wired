@@ -100,7 +100,7 @@ export default function TeamDetailPage() {
               <p className="text-grotesk" style={{ color: 'var(--color-gray-medium)' }}>
                 Create your first hiring campaign to start recruiting
               </p>
-              <Button variant="cta-small" onClick={() => router.push('/campaigns/new')}>
+              <Button variant="cta-small" onClick={() => router.push(`/campaigns/new?teamId=${teamId}`)}>
                 add campaign
               </Button>
             </div>
@@ -199,7 +199,7 @@ export default function TeamDetailPage() {
             {/* Add Campaign button - only on Campaigns tab */}
             {activeTab === 1 && (
               <div className="mt-[var(--space-m)]">
-                <Button variant="cta-small" onClick={() => router.push('/campaigns/new')}>
+                <Button variant="cta-small" onClick={() => router.push(`/campaigns/new?teamId=${teamId}`)}>
                   add campaign
                 </Button>
               </div>

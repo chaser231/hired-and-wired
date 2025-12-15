@@ -12,6 +12,7 @@ interface TaskProps {
   hasError?: boolean;
   errorMessage?: string;
   buttonLabel?: string;
+  showButton?: boolean;
   onToggle?: () => void;
   onButtonClick?: () => void;
   className?: string;
@@ -24,6 +25,7 @@ export function Task({
   hasError = false,
   errorMessage = 'some field need your attention',
   buttonLabel = 'job description',
+  showButton = true,
   onToggle,
   onButtonClick,
   className = '',
@@ -78,9 +80,11 @@ export function Task({
         )}
 
         {/* Button */}
-        <Button variant="secondary" onClick={onButtonClick}>
-          {buttonLabel}
-        </Button>
+        {showButton && (
+          <Button variant="secondary" onClick={onButtonClick}>
+            {buttonLabel}
+          </Button>
+        )}
       </div>
     </div>
   );
