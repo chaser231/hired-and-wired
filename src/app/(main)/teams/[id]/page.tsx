@@ -1,107 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { SwitchGroup } from '@/components/ui';
 import { Profile, Notify } from '@/components/blocks';
 import { SecondRow } from '@/components/sections';
-
-// Mock data for team members
-const teamMembersData = [
-  {
-    id: '1',
-    name: 'Sarah Mitchell',
-    role: 'Senior Software Engineer',
-    avatarSrc: '/assets/avatar-katya.png',
-    status: 'green' as const,
-    progress: 75,
-  },
-  {
-    id: '2',
-    name: 'Michael Smith',
-    role: 'Product Manager',
-    avatarSrc: '/assets/avatar-petya.png',
-    status: 'purple' as const,
-    progress: 85,
-  },
-  {
-    id: '3',
-    name: 'Emily Davis',
-    role: 'UX Designer',
-    avatarSrc: '/assets/avatar-katya.png',
-    status: 'green' as const,
-    progress: 60,
-  },
-  {
-    id: '4',
-    name: 'David Brown',
-    role: 'QA Engineer',
-    avatarSrc: '/assets/avatar-dog.png',
-    status: 'purple' as const,
-    progress: 90,
-  },
-  {
-    id: '5',
-    name: 'Linda Garcia',
-    role: 'Data Analyst',
-    avatarSrc: '/assets/avatar-katya.png',
-    status: 'green' as const,
-    progress: 70,
-  },
-  {
-    id: '6',
-    name: 'James Wilson',
-    role: 'Software Engineer',
-    avatarSrc: '/assets/avatar-petya.png',
-    status: 'red' as const,
-    progress: 40,
-  },
-  {
-    id: '7',
-    name: 'Alice Thompson',
-    role: 'Marketing Specialist',
-    avatarSrc: '/assets/avatar-katya.png',
-    status: 'green' as const,
-    progress: 80,
-  },
-  {
-    id: '8',
-    name: 'Robert Martinez',
-    role: 'Sales Executive',
-    avatarSrc: '/assets/avatar-dog.png',
-    status: 'red' as const,
-    progress: 35,
-  },
-  {
-    id: '9',
-    name: 'Jessica Taylor',
-    role: 'Content Strategist',
-    avatarSrc: '/assets/avatar-katya.png',
-    status: 'green' as const,
-    progress: 65,
-  },
-  {
-    id: '10',
-    name: 'Charles Lee',
-    role: 'Systems Analyst',
-    avatarSrc: '/assets/avatar-petya.png',
-    status: 'red' as const,
-    progress: 45,
-  },
-];
-
-// Mock team data
-const teamData = {
-  id: '1',
-  name: 'Engineering Team',
-  description: 'Detailed team overview and performance metrics',
-  coverSrc: '/assets/Cover Image-1.jpg',
-  weekUpdate: 'Kai finished the UI designs, Anya onboarded 3 new hires, and the team had a successful offsite event.',
-};
+import { useTeamsStore } from '@/lib/stores/teamsStore';
 
 export default function TeamDetailPage() {
   const router = useRouter();
+  const params = useParams();
+  const teamId = params.id as string;
+  
+  const team = useTeamsStore((state) => state.getTeam(teamId));
   const [activeTab, setActiveTab] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -119,6 +31,18 @@ export default function TeamDetailPage() {
     router.push('/');
   };
 
+  // If team not found, redirect to home
+  if (!team) {
+    return (
+      <main className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-h3">Team not found</p>
+        <button onClick={handleBack} className="mt-4 text-grotesk underline">
+          Go back to all teams
+        </button>
+      </main>
+    );
+  }
+
   return (
     <main className="flex flex-col items-center pb-[84px]">
       {/* SecondRow - fixed under TopMenu, transparent → white on scroll */}
@@ -133,7 +57,7 @@ export default function TeamDetailPage() {
           variant="default"
           breadcrumbs={[
             { label: 'All teams', href: '/' },
-            { label: teamData.name },
+            { label: team.name },
           ]}
           onBack={handleBack}
         />
@@ -143,8 +67,8 @@ export default function TeamDetailPage() {
       <section className="relative w-full h-[580px] flex flex-col items-center justify-end overflow-hidden">
         {/* Background Image - Full Width */}
         <Image
-          src={teamData.coverSrc}
-          alt={`${teamData.name} cover`}
+          src={team.coverSrc}
+          alt={`${team.name} cover`}
           fill
           className="object-cover"
           priority
@@ -162,11 +86,16 @@ export default function TeamDetailPage() {
         <div className="relative z-10 flex flex-col items-center gap-[160px] w-full max-w-[var(--content-width)] pb-[var(--space-xl)]">
           {/* Profile Info */}
           <div className="flex flex-col items-center text-center">
-            <h1 className="text-h1">{teamData.name}</h1>
+            <h1 className="text-h1">{team.name}</h1>
             <p className="text-description mt-[var(--space-xl)]">
-              Detailed team overview
-              <br />
-              and performance metrics
+              {team.description.length > 30 
+                ? <>
+                    {team.description.split(' ').slice(0, 4).join(' ')}
+                    <br />
+                    {team.description.split(' ').slice(4).join(' ')}
+                  </>
+                : team.description
+              }
             </p>
           </div>
 
@@ -182,7 +111,7 @@ export default function TeamDetailPage() {
       {/* Content Section - 830px Width */}
       <section className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[var(--section-gap)]">
         {/* Notify Block */}
-        <Notify message={teamData.weekUpdate} />
+        <Notify message={team.weekHighlight} />
 
         {/* Team Section - White Card */}
         <div
@@ -194,7 +123,7 @@ export default function TeamDetailPage() {
 
           {/* Team Members List */}
           <div className="flex flex-col gap-[var(--space-xxxs)]">
-            {teamMembersData.map((member, index) => (
+            {team.members.map((member, index) => (
               <Profile
                 key={member.id}
                 name={member.name}
@@ -203,7 +132,7 @@ export default function TeamDetailPage() {
                 variant="long"
                 status={member.status}
                 progress={member.progress}
-                className={index === teamMembersData.length - 1 ? 'border-b-0' : ''}
+                className={index === team.members.length - 1 ? 'border-b-0' : ''}
               />
             ))}
           </div>

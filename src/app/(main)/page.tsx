@@ -5,82 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button, SwitchGroup } from '@/components/ui';
 import { CardMetric, Team } from '@/components/blocks';
-
-// Mock data for teams
-const teamsData = [
-  {
-    id: '1',
-    name: 'Engineering Team',
-    memberCount: 24,
-    productivity: 89,
-    weekHighlight: 'Petya was drinking too much tea this week',
-    members: [
-      { src: '/assets/avatar-katya.png', alt: 'Katya' },
-      { src: '/assets/avatar-petya.png', alt: 'Petya' },
-      { src: '/assets/avatar-dog.png', alt: 'Dog' },
-    ],
-  },
-  {
-    id: '2',
-    name: 'Engineering Team',
-    memberCount: 24,
-    productivity: 89,
-    weekHighlight: 'Petya was drinking too much tea this week',
-    members: [
-      { src: '/assets/avatar-katya.png', alt: 'Katya' },
-      { src: '/assets/avatar-petya.png', alt: 'Petya' },
-      { src: '/assets/avatar-dog.png', alt: 'Dog' },
-    ],
-  },
-  {
-    id: '3',
-    name: 'Engineering Team',
-    memberCount: 24,
-    productivity: 89,
-    weekHighlight: 'Petya was drinking too much tea this week',
-    members: [
-      { src: '/assets/avatar-katya.png', alt: 'Katya' },
-      { src: '/assets/avatar-petya.png', alt: 'Petya' },
-      { src: '/assets/avatar-dog.png', alt: 'Dog' },
-    ],
-  },
-  {
-    id: '4',
-    name: 'Engineering Team',
-    memberCount: 24,
-    productivity: 89,
-    weekHighlight: 'Petya was drinking too much tea this week',
-    members: [
-      { src: '/assets/avatar-katya.png', alt: 'Katya' },
-      { src: '/assets/avatar-petya.png', alt: 'Petya' },
-      { src: '/assets/avatar-dog.png', alt: 'Dog' },
-    ],
-  },
-  {
-    id: '5',
-    name: 'Engineering Team',
-    memberCount: 24,
-    productivity: 89,
-    weekHighlight: 'Petya was drinking too much tea this week',
-    members: [
-      { src: '/assets/avatar-katya.png', alt: 'Katya' },
-      { src: '/assets/avatar-petya.png', alt: 'Petya' },
-      { src: '/assets/avatar-dog.png', alt: 'Dog' },
-    ],
-  },
-  {
-    id: '6',
-    name: 'Engineering Team',
-    memberCount: 24,
-    productivity: 89,
-    weekHighlight: 'Petya was drinking too much tea this week',
-    members: [
-      { src: '/assets/avatar-katya.png', alt: 'Katya' },
-      { src: '/assets/avatar-petya.png', alt: 'Petya' },
-      { src: '/assets/avatar-dog.png', alt: 'Dog' },
-    ],
-  },
-];
+import { useTeamsStore } from '@/lib/stores/teamsStore';
 
 const metricsData = [
   { title: 'Health', summary: 'Overall: Good', color: 'pink-light' as const },
@@ -92,6 +17,7 @@ const metricsData = [
 export default function AllTeamsPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(0);
+  const teams = useTeamsStore((state) => state.teams);
 
   return (
     <main className="flex flex-col items-center pb-[84px]">
@@ -159,7 +85,7 @@ export default function AllTeamsPage() {
 
         {/* Teams Grid - 2 columns */}
         <div className="grid grid-cols-2 gap-[var(--section-gap)]">
-          {teamsData.map((team) => (
+          {teams.map((team) => (
             <Team
               key={team.id}
               id={team.id}
@@ -167,7 +93,10 @@ export default function AllTeamsPage() {
               memberCount={team.memberCount}
               productivity={team.productivity}
               weekHighlight={team.weekHighlight}
-              members={team.members}
+              members={team.members.slice(0, 3).map((m) => ({
+                src: m.avatarSrc,
+                alt: m.name,
+              }))}
               href={`/teams/${team.id}`}
             />
           ))}
@@ -176,4 +105,3 @@ export default function AllTeamsPage() {
     </main>
   );
 }
-

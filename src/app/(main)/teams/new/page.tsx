@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input, TextArea, Dropdown, Button } from '@/components/ui';
 import { SecondRow } from '@/components/sections';
+import { useTeamsStore } from '@/lib/stores/teamsStore';
 
 // Mock data for team leads
 const teamLeadOptions = [
@@ -25,6 +26,7 @@ const departmentOptions = [
 
 export default function CreateTeamPage() {
   const router = useRouter();
+  const addTeam = useTeamsStore((state) => state.addTeam);
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Form state
@@ -53,8 +55,14 @@ export default function CreateTeamPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Handle form submission
-    console.log({ teamName, description, teamLead, department });
+    
+    addTeam({
+      name: teamName,
+      description: description || `${teamName} - building great things together`,
+      department,
+      teamLead,
+    });
+
     router.push('/');
   };
 
@@ -179,4 +187,3 @@ export default function CreateTeamPage() {
     </main>
   );
 }
-
