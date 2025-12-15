@@ -28,35 +28,32 @@ export function Profile({
     return (
       <div
         className={`
-          flex flex-col
+          flex items-center gap-[var(--space-s)]
           py-[var(--space-s)]
           border-b border-[var(--color-gray-light)]
           ${className}
         `.replace(/\s+/g, ' ').trim()}
       >
-        {/* Top row: Avatar + Content */}
-        <div className="flex gap-[var(--space-s)]">
-          {/* Avatar 30x30 */}
-          <div className="w-[30px] h-[30px] flex-shrink-0">
-            <Avatar src={avatarSrc} alt={name} size="md" className="w-full h-full" />
-          </div>
-          
-          {/* Content: Name/Role + Status */}
-          <div className="flex-1 flex justify-between gap-[var(--space-m)]">
-            {/* Name and Role */}
-            <div className="flex flex-col gap-[var(--space-xs)]">
-              <p className="text-h3">{name}</p>
-              <p className="text-pixel">{role}</p>
-            </div>
-            
-            {/* Status */}
-            {status && <Status variant={status} showLabel />}
-          </div>
+        {/* Avatar 30x30 */}
+        <div className="w-[30px] h-[30px] flex-shrink-0">
+          <Avatar src={avatarSrc} alt={name} size="md" className="w-full h-full" />
         </div>
         
-        {/* Progress Bar - full width */}
+        {/* Content: Name/Role + Status - fixed width 333px as in Figma */}
+        <div className="flex justify-between gap-[var(--space-m)]" style={{ width: '333px' }}>
+          {/* Name and Role */}
+          <div className="flex flex-col gap-[var(--space-xs)]" style={{ width: '243px' }}>
+            <p className="text-h3">{name}</p>
+            <p className="text-pixel">{role}</p>
+          </div>
+          
+          {/* Status */}
+          {status && <Status variant={status} showLabel />}
+        </div>
+        
+        {/* Progress Bar - fills remaining space */}
         {progress !== undefined && (
-          <div className="mt-[var(--space-s)]">
+          <div className="flex-1">
             <Bar progress={progress} variant="profile" />
           </div>
         )}
