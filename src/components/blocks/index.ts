@@ -8,3 +8,5 @@ export { CardMetric, CardsMetrica } from './CardMetric';
 export { Notify } from './Notify';
 export { Attempt } from './Attempt';
 export { NodeCanvas } from './NodeCanvas';
+export { OrgNode } from './OrgNode';
+

@@ -53,10 +53,15 @@ export default function AllTeamsPage() {
               </p>
             </div>
 
-            {/* Add Team Button */}
-            <Button variant="cta-small" onClick={() => router.push('/teams/new')}>
-              add team
-            </Button>
+            {/* Action Buttons */}
+            <div className="flex gap-[var(--space-xs)]">
+              <Button variant="cta-small" onClick={() => router.push('/teams/new')}>
+                add team
+              </Button>
+              <Button variant="secondary" onClick={() => router.push('/org-chart')}>
+                org chart
+              </Button>
+            </div>
           </div>
 
           {/* Tab Switcher - at bottom */}
