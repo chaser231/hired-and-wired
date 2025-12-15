@@ -7,6 +7,8 @@ type TopMenuVariant = 'all' | 'templates' | 'off';
 
 interface TopMenuProps {
   variant?: TopMenuVariant;
+  /** Whether the page has been scrolled - adds white background */
+  isScrolled?: boolean;
   onGenerateReport?: () => void;
   onTeamsClick?: () => void;
   onTemplatesClick?: () => void;
@@ -17,6 +19,7 @@ interface TopMenuProps {
 
 export function TopMenu({
   variant = 'all',
+  isScrolled = false,
   onGenerateReport,
   onTeamsClick,
   onTemplatesClick,
@@ -29,7 +32,8 @@ export function TopMenu({
       className={`
         flex items-center justify-between
         px-[var(--space-m)] py-[var(--space-s)]
-        border-b border-[var(--color-white)]
+        border-b transition-colors duration-200
+        ${isScrolled ? 'bg-[var(--color-white)] border-[var(--color-gray-light)]' : 'bg-transparent border-transparent'}
         ${className}
       `.replace(/\s+/g, ' ').trim()}
     >
