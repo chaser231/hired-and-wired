@@ -29,14 +29,22 @@ export function TopMenu({
       className={`
         flex items-center justify-between
         px-[var(--space-m)] py-[var(--space-s)]
-        border-b border-[var(--color-gray-light)]
+        border-b border-[var(--color-white)]
         ${className}
       `.replace(/\s+/g, ' ').trim()}
     >
       {/* Left section: Logo + Actions */}
-      <div className="flex items-center gap-[var(--space-m)]">
+      <div className="flex items-center gap-[var(--space-xxl)]">
         {/* Logo */}
-        <span className="text-h4 font-semibold">Hired & Wired</span>
+        <span
+          style={{
+            fontFamily: 'var(--font-instrument)',
+            fontSize: '23px',
+            lineHeight: '1.3',
+          }}
+        >
+          Hired & Wired
+        </span>
 
         {/* Actions */}
         <div className="flex items-center gap-[var(--space-xs)]">

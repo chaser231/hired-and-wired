@@ -18,7 +18,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-gray-bg)' }}>
-      {/* Top Menu - Full Width */}
+      {/* Top Menu - Full Width, transparent background */}
       <TopMenu
         variant={getMenuVariant()}
         onGenerateReport={() => router.push('/reports')}
@@ -26,7 +26,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
         onTemplatesClick={() => router.push('/templates')}
         onProfileClick={() => router.push('/profile')}
         onLogoutClick={() => console.log('Logout')}
-        className="sticky top-0 z-50 bg-[var(--color-white)]"
+        className="sticky top-0 z-50"
       />
       
       {/* Page Content */}

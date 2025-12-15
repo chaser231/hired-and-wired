@@ -114,16 +114,16 @@ src/
 ---
 
 ## Фаза 5: Organisms — Сложные блоки
-**Статус**: ⏳ В процессе
+**Статус**: ✅ Завершена
 
 ### Задачи
-- [ ] **MenuSwitch** — переключатель меню (on, off)
-- [ ] **TopMenu** — верхнее меню (all, templates, off)
-- [ ] **SecondRow** — breadcrumbs + actions (default, builder)
-- [ ] **Header** — полный хедер с TopMenu + SecondRow + progress bar
-- [ ] **Pipeline** — канбан-доска с колонками (Applied, Screening, Interview, Offer)
-- [ ] **Task** — задача в визарде (past, next) с чекбоксом и тегами
-- [ ] **CardTop** — hero-карточка профиля с изображением (yellow, gray)
+- [x] **MenuSwitch** — переключатель меню (on, off)
+- [x] **TopMenu** — верхнее меню (all, templates, off)
+- [x] **SecondRow** — breadcrumbs + actions (default, builder)
+- [x] **Header** — полный хедер с TopMenu + SecondRow + progress bar
+- [x] **Pipeline** — канбан-доска с колонками (Applied, Screening, Interview, Offer)
+- [x] **Task** — задача в визарде (past, next) с чекбоксом и тегами
+- [x] **CardTop** — hero-карточка профиля с изображением (yellow, gray)
 
 ---
 
