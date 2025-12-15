@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Avatar, SwitchGroup } from '@/components/ui';
+import { SwitchGroup } from '@/components/ui';
 import { Profile, Notify } from '@/components/blocks';
 import { SecondRow } from '@/components/sections';
 
@@ -103,17 +103,31 @@ const teamData = {
 export default function TeamDetailPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Track scroll for SecondRow background
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleBack = () => {
     router.push('/');
   };
 
   return (
-    <main className="flex flex-col items-center gap-[var(--page-gap)] pb-[84px]">
-      {/* SecondRow - fixed under TopMenu */}
+    <main className="flex flex-col items-center pb-[84px]">
+      {/* SecondRow - fixed under TopMenu, transparent → white on scroll */}
       <div 
-        className="fixed top-[60px] left-0 right-0 z-40"
-        style={{ backgroundColor: 'var(--color-white)' }}
+        className="fixed top-[60px] left-0 right-0 z-40 transition-colors duration-200"
+        style={{ 
+          backgroundColor: isScrolled ? 'var(--color-white)' : 'transparent',
+          borderBottom: isScrolled ? '1px solid var(--color-gray-light)' : 'none',
+        }}
       >
         <SecondRow
           variant="default"
@@ -125,64 +139,50 @@ export default function TeamDetailPage() {
         />
       </div>
 
-      {/* Main Content */}
-      <div className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[120px]">
-        {/* CardTop - Gray variant */}
+      {/* Hero Section - Full Width with background image */}
+      <section className="relative w-full h-[580px] flex flex-col items-center justify-end overflow-hidden">
+        {/* Background Image - Full Width */}
+        <Image
+          src={teamData.coverSrc}
+          alt={`${teamData.name} cover`}
+          fill
+          className="object-cover"
+          priority
+        />
+
+        {/* Gradient Overlay */}
         <div
-          className="relative overflow-hidden flex flex-col justify-end items-center h-[480px] p-[var(--space-xl)] rounded-[var(--radius-lg)]"
-        >
-          {/* Background Image */}
-          <Image
-            src={teamData.coverSrc}
-            alt={`${teamData.name} cover`}
-            fill
-            className="object-cover"
-            priority
-          />
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to top, rgba(242, 242, 242, 1) 0%, rgba(242, 242, 242, 0) 100%)',
+          }}
+        />
 
-          {/* Gradient Overlay */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(to top, rgba(242, 242, 242, 1) 0%, rgba(242, 242, 242, 0) 100%)',
-            }}
-          />
-
-          {/* Content */}
-          <div className="relative z-10 flex flex-col items-center gap-[160px]">
-            {/* Profile Info */}
-            <div className="flex flex-col items-center text-center">
-              <h1 className="text-h1">{teamData.name}</h1>
-              <p className="text-description mt-[var(--space-xl)]">
-                {teamData.description.split(' ').slice(0, 3).join(' ')}
-                <br />
-                {teamData.description.split(' ').slice(3).join(' ')}
-              </p>
-            </div>
-
-            {/* Switch Group */}
-            <SwitchGroup
-              options={['Team', 'Campaigns', 'Access']}
-              value={activeTab}
-              onChange={setActiveTab}
-            />
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center gap-[160px] w-full max-w-[var(--content-width)] pb-[var(--space-xl)]">
+          {/* Profile Info */}
+          <div className="flex flex-col items-center text-center">
+            <h1 className="text-h1">{teamData.name}</h1>
+            <p className="text-description mt-[var(--space-xl)]">
+              Detailed team overview
+              <br />
+              and performance metrics
+            </p>
           </div>
-        </div>
 
-        {/* Notify Block with Avatars */}
-        <div className="flex flex-col gap-[var(--section-gap)]">
-          <Notify message={teamData.weekUpdate} />
-          
-          {/* Avatars - stacked with overlap */}
-          <div className="relative h-[30px] ml-[var(--space-xl)]">
-            <div className="absolute left-0 top-0">
-              <Avatar src="/assets/avatar-dog.png" alt="Team member" size="md" />
-            </div>
-            <div className="absolute left-[4px] top-[4px]">
-              <Avatar src="/assets/avatar-katya.png" alt="Team member" size="md" />
-            </div>
-          </div>
+          {/* Switch Group */}
+          <SwitchGroup
+            options={['Team', 'Campaigns', 'Access']}
+            value={activeTab}
+            onChange={setActiveTab}
+          />
         </div>
+      </section>
+
+      {/* Content Section - 830px Width */}
+      <section className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[var(--section-gap)]">
+        {/* Notify Block */}
+        <Notify message={teamData.weekUpdate} />
 
         {/* Team Section - White Card */}
         <div
@@ -208,8 +208,7 @@ export default function TeamDetailPage() {
             ))}
           </div>
         </div>
-      </div>
+      </section>
     </main>
   );
 }
-
