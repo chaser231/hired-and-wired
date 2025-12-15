@@ -171,7 +171,7 @@ src/
 ---
 
 ## Фаза 8: Hiring Campaigns
-**Статус**: ⏳ В процессе
+**Статус**: ✅ Завершена
 
 ### Задачи
 - [x] CampaignPreview в списке (вкладка Campaigns на странице команды)
@@ -179,8 +179,9 @@ src/
 - [x] Страница Hiring Campaign Add (/campaigns/new) — обзор задач с Task компонентами
 - [x] Wizard создания кампании (/campaigns/new/wizard) — форма с Details и Requirements
 - [x] Страница успеха (/campaigns/new/success)
-- [ ] Canban для Pipeline
-- [ ] Профиль кандидата
+- [x] Страница кампании с Pipeline (/campaigns/[id]) — метрики, funnel, kanban-доска
+- [x] Профиль кандидата (/campaigns/[id]/candidates/[candidateId]) — опыт, навыки, проекты, оценка
+- [x] Страница переговоров (/campaigns/[id]/candidates/[candidateId]/negotiate) — история попыток, форма оффера
 
 ---
 
@@ -317,7 +318,7 @@ src/
   - Полный CRUD flow: создание команд → отображение на главной → детали команды
   - Org Chart (/org-chart): древовидная структура организации с OrgNode компонентом
   - Collapsible nodes, линии связи, root выделен жёлтым
-- ⏳ **Фаза 8 продолжается — Hiring Campaigns:**
+- ✅ **Фаза 8 завершена — Hiring Campaigns:**
   - Вкладка Campaigns на странице команды с CampaignPreview карточками
   - CampaignPreview обновлён: gap 90px, отдельные ряды для чисел и лейблов
   - Notify с hiring funnel статистикой
@@ -325,6 +326,9 @@ src/
   - Wizard создания кампании (/campaigns/new/wizard) — форма с Details и Requirements секциями
   - Страница успеха (/campaigns/new/success) — подтверждение публикации кампании
   - Task компонент обновлён — добавлен showButton prop
+  - Страница кампании (/campaigns/[id]) — CardTop, метрики, funnel, Pipeline (Kanban)
+  - Страница кандидата (/campaigns/[id]/candidates/[candidateId]) — профиль, опыт, навыки, проекты, оценка, история интервью
+  - Страница переговоров (negotiate) — история попыток (Attempt), форма оффера с предсказанием
 
 ---
 
