@@ -23,10 +23,21 @@ function Graph({ bars = [100, 58], className = '' }: GraphProps) {
   );
 }
 
+type CardMetricColor = 'mint' | 'pink-light' | 'pink' | 'purple-light' | 'green-light';
+
+const colorMap: Record<CardMetricColor, string> = {
+  'mint': 'var(--color-mint)',
+  'pink-light': 'var(--color-pink-light)',
+  'pink': 'var(--color-pink)',
+  'purple-light': 'var(--color-purple-light)',
+  'green-light': 'var(--color-green-light)',
+};
+
 interface CardMetricProps {
   title: string;
   summary?: string;
   graphBars?: number[];
+  color?: CardMetricColor;
   className?: string;
 }
 
@@ -34,18 +45,19 @@ export function CardMetric({
   title,
   summary,
   graphBars = [100, 58],
+  color = 'mint',
   className = '',
 }: CardMetricProps) {
   return (
     <div
       className={`
         flex flex-col gap-[var(--space-l)]
-        w-[190px] h-[195px]
+        flex-1
         p-[var(--space-xl)]
-        bg-[var(--color-mint)]
         rounded-[var(--radius-lg)]
         ${className}
       `.replace(/\s+/g, ' ').trim()}
+      style={{ backgroundColor: colorMap[color] }}
     >
       <p className="text-bold">{title}</p>
       <div className="flex flex-col gap-[var(--space-xs)] flex-1">

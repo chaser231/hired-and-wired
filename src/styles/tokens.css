@@ -91,4 +91,12 @@
   --tracking-tight-2: -0.02em;
   --tracking-tight-3: -0.03em;
   --tracking-wide: 0.2em;
+
+  /* ============================================
+     LAYOUT
+     ============================================ */
+  --content-width: 830px;
+  --page-gap: 90px;
+  --section-gap: 4px;
 }
+

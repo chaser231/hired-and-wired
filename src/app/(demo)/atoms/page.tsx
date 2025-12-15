@@ -19,8 +19,8 @@ import {
   ListItem,
 } from '@/components/ui';
 
-export default function Home() {
-  const [switchGroup, setSwitchGroup] = useState('All');
+export default function AtomsDemo() {
+  const [switchGroup, setSwitchGroup] = useState(0);
   const [dropdown, setDropdown] = useState('');
 
   const avatarList = [
@@ -276,158 +276,12 @@ export default function Home() {
           </List>
         </section>
 
-        {/* Colors Demo */}
-        <section
-          className="p-[var(--space-l)] rounded-[var(--radius-lg)]"
-          style={{ backgroundColor: 'var(--color-white)' }}
-        >
-          <h2 className="text-h2 mb-[var(--space-m)]">Colors</h2>
-
-          <div className="space-y-[var(--space-m)]">
-            {/* Base & Neutral */}
-            <div>
-              <p className="text-caps mb-[var(--space-xs)]">Base & Neutral</p>
-              <div className="grid grid-cols-6 gap-[var(--space-xs)]">
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)] border"
-                  style={{ backgroundColor: 'var(--color-white)', borderColor: 'var(--color-gray-light)' }}
-                >
-                  <p className="text-caps">White</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-black)', color: 'var(--color-white)' }}
-                >
-                  <p className="text-caps">Black</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-gray-bg)' }}
-                >
-                  <p className="text-caps">Gray BG</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-gray-light)' }}
-                >
-                  <p className="text-caps">Gray Light</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-gray-medium)' }}
-                >
-                  <p className="text-caps">Gray Medium</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-gray-dark)', color: 'var(--color-white)' }}
-                >
-                  <p className="text-caps">Gray Dark</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Accent */}
-            <div>
-              <p className="text-caps mb-[var(--space-xs)]">Accent</p>
-              <div className="grid grid-cols-3 gap-[var(--space-xs)]">
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-yellow)' }}
-                >
-                  <p className="text-caps">Yellow</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-gold)', color: 'var(--color-white)' }}
-                >
-                  <p className="text-caps">Gold</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-yellow-bright)' }}
-                >
-                  <p className="text-caps">Yellow Bright</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Semantic */}
-            <div>
-              <p className="text-caps mb-[var(--space-xs)]">Semantic</p>
-              <div className="grid grid-cols-3 gap-[var(--space-xs)]">
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-success)', color: 'var(--color-white)' }}
-                >
-                  <p className="text-caps">Success #00867B</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-error)', color: 'var(--color-white)' }}
-                >
-                  <p className="text-caps">Error #CC0000</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-purple)', color: 'var(--color-white)' }}
-                >
-                  <p className="text-caps">Purple #9747FF</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Card Backgrounds */}
-            <div>
-              <p className="text-caps mb-[var(--space-xs)]">Card Backgrounds</p>
-              <div className="grid grid-cols-6 gap-[var(--space-xs)]">
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-coral)' }}
-                >
-                  <p className="text-caps">Coral</p>
-                  <p className="text-pixel mt-1" style={{ color: 'var(--color-error)' }}>Error BG</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-mint)' }}
-                >
-                  <p className="text-caps">Mint</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-pink-light)' }}
-                >
-                  <p className="text-caps">Pink Light</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-pink)' }}
-                >
-                  <p className="text-caps">Pink</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-purple-light)' }}
-                >
-                  <p className="text-caps">Purple Light</p>
-                </div>
-                <div
-                  className="p-[var(--space-s)] rounded-[var(--radius-md)]"
-                  style={{ backgroundColor: 'var(--color-green-light)' }}
-                >
-                  <p className="text-caps">Green Light</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Footer */}
         <footer className="text-center text-grotesk" style={{ color: 'var(--color-gray-dark)' }}>
-          <p>HR Assist MVP — Phase 3: Atoms</p>
+          <p>HR Assist MVP — Design System Atoms</p>
         </footer>
       </div>
     </main>
   );
 }
+
