@@ -1,69 +1,15 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { SecondRow, CardTop } from '@/components/sections';
 import { Profile, ExperiencePreview, ProjectPreview } from '@/components/blocks';
 import { Button, Tag, Bar } from '@/components/ui';
 import { useCampaignsStore } from '@/lib/stores/campaignsStore';
 import { useTeamsStore } from '@/lib/stores/teamsStore';
+import { useCandidatesStore, stageProgress, CandidateStage } from '@/lib/stores/candidatesStore';
 
-// Mock candidate data
-const mockCandidate = {
-  id: '14',
-  name: 'Sarah Mitchell',
-  role: 'Senior Software Engineer',
-  teams: ['frontend-team', 'Innovation Lab'],
-  access: ['Lead Developer', 'Member'],
-  accessLevel: 'Access LEVEL 4 (CODE RED)',
-  workExperience: [
-    {
-      period: 'Mar 2021 — Dec 2021 (9 months)',
-      title: 'Senior Frontend Developer',
-      company: 'WebInnovate Inc.',
-      description: 'Developed interactive web components, collaborated with designers, and enhanced user experience.',
-    },
-    {
-      period: 'Jun 2019 — Feb 2021 (1 year 8 months)',
-      title: 'Senior Frontend Developer',
-      company: 'Creative Solutions Co.',
-      description: 'Assisted in building responsive websites, wrote clean code, and participated in code reviews.',
-    },
-    {
-      period: 'Jan 2018 — May 2019 (1 year 4 months)',
-      title: 'Senior Frontend Developer',
-      company: 'TechStartups Ltd.',
-      description: 'Gained hands-on experience in web development, supported team projects, and learned Agile methodologies.',
-    },
-  ],
-  techSkills: ['Vue.js', 'Angular', 'Svelte', 'Ember.js', 'Backbone.js'],
-  keyProjects: [
-    {
-      title: 'Mobile-responsive online marketplace using Flutter and Django',
-      tags: ['Flutter', 'Django', 'PostgreSQL', 'REST API'],
-    },
-    {
-      title: 'Real-time chat application built with Vue.js and Express',
-      tags: ['Vue.js', 'Express', 'MySQL', 'Socket.IO'],
-    },
-    {
-      title: 'Progressive web app for event management using Angular and Ruby on Rails',
-      tags: ['Angular', 'Ruby on Rails', 'SQLite', 'GraphQL'],
-    },
-  ],
-  assessmentResults: [
-    { name: 'technical skills', value: 89 },
-    { name: 'Productivity', value: 89 },
-    { name: 'communication', value: 89 },
-    { name: 'adaptivity', value: 89 },
-  ],
-  interviewHistory: [
-    { name: 'Michael Lee', role: 'Product Manager', color: '#F7E0DD' },
-    { name: 'Emily Carter', role: 'UX Designer', color: '#E0E2A4' },
-    { name: 'David Smith', role: 'Data Analyst', color: '#FFE3F1' },
-  ],
-};
-
-const progressStages = [
+const progressStages: CandidateStage[] = [
   'applied',
   'interviewed',
   'onboarding',
@@ -80,14 +26,41 @@ export default function CandidatePage() {
   const router = useRouter();
   const campaignId = params.id as string;
   const candidateId = params.candidateId as string;
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const campaign = useCampaignsStore((state) => state.getCampaign(campaignId));
   const team = useTeamsStore((state) =>
     campaign ? state.getTeam(campaign.teamId) : undefined
   );
+  const candidate = useCandidatesStore((state) => state.getCandidate(candidateId));
+  const hireCandidate = useCandidatesStore((state) => state.hireCandidate);
+  const rejectCandidate = useCandidatesStore((state) => state.rejectCandidate);
 
-  const candidate = mockCandidate; // In real app, fetch by candidateId
+  // Track scroll for SecondRow background
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Handle loading state
+  if (!candidate || !campaign) {
+    return (
+      <main className="flex flex-col items-center min-h-screen px-[var(--space-m)] bg-[var(--color-gray-bg)]">
+        <div className="w-full max-w-[var(--content-width)] mt-[104px]">
+          <p className="text-h2">Candidate not found</p>
+        </div>
+      </main>
+    );
+  }
+
   const teamName = team?.name || 'Team';
+  const currentProgress = stageProgress[candidate.stage];
 
   const handlePromote = () => {
     // TODO: Implement promote logic
@@ -106,31 +79,55 @@ export default function CandidatePage() {
   };
 
   const handleHire = () => {
-    // TODO: Implement hire logic
-    router.push(`/campaigns/${campaignId}`);
+    if (selectedDate) {
+      hireCandidate(candidateId, selectedDate);
+      router.push(`/campaigns/${campaignId}`);
+    } else {
+      alert('Please select a first work day');
+    }
   };
 
   const handleReject = () => {
-    router.back();
+    rejectCandidate(candidateId);
+    router.push(`/campaigns/${campaignId}`);
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDate(e.target.value);
+    setShowDatePicker(false);
+  };
+
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return 'choose date';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   return (
-    <main className="flex flex-col items-center min-h-screen px-[var(--space-m)] bg-[var(--color-gray-bg)]">
-      {/* SecondRow */}
-      <SecondRow
-        variant="default"
-        breadcrumbs={[
-          { label: 'All teams', href: '/' },
-          { label: teamName, href: `/teams/${campaign?.teamId}` },
-          { label: campaign?.title || 'Campaign', href: `/campaigns/${campaignId}` },
-          { label: candidate.name },
-        ]}
-        onBack={() => router.back()}
-      />
+    <main className="flex flex-col items-center min-h-screen bg-[var(--color-gray-bg)]">
+      {/* SecondRow - fixed under TopMenu */}
+      <div
+        className="fixed top-[60px] left-0 right-0 z-40 transition-colors duration-200"
+        style={{
+          backgroundColor: isScrolled ? 'var(--color-white)' : 'transparent',
+          borderBottom: isScrolled ? '1px solid var(--color-gray-light)' : 'none',
+        }}
+      >
+        <SecondRow
+          variant="default"
+          breadcrumbs={[
+            { label: 'All teams', href: '/' },
+            { label: teamName, href: `/teams/${campaign.teamId}` },
+            { label: campaign.title, href: `/campaigns/${campaignId}` },
+            { label: candidate.name },
+          ]}
+          onBack={() => router.back()}
+        />
+      </div>
 
       {/* Progress Bar */}
-      <div className="w-full px-[var(--space-m)] mt-[90px]">
-        <Bar variant="big" percentage={20} />
+      <div className="w-full px-[var(--space-xl)] mt-[104px]">
+        <Bar variant="default" progress={currentProgress} size="big" />
         <div className="flex justify-between mt-[var(--space-xs)]">
           {progressStages.map((stage) => (
             <span
@@ -140,7 +137,8 @@ export default function CandidatePage() {
                 fontFamily: 'var(--font-akkurat)',
                 fontSize: '8px',
                 letterSpacing: '0.2em',
-                color: 'var(--color-gray-dark)',
+                color: candidate.stage === stage ? 'var(--color-black)' : 'var(--color-gray-dark)',
+                fontWeight: candidate.stage === stage ? 700 : 400,
               }}
             >
               {stage}
@@ -150,66 +148,19 @@ export default function CandidatePage() {
       </div>
 
       {/* Content Container */}
-      <div className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[var(--space-xl)]">
+      <div className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[var(--space-xl)] px-[var(--space-m)]">
         {/* CardTop */}
         <CardTop
           variant="yellow"
+          coverSrc="/assets/card top — копия.png"
           name={candidate.name}
           role={candidate.role}
-          showDropdowns={true}
-          customActions={
-            <div className="flex items-center gap-[var(--space-xxs)]">
-              <Button variant="cta-small" onClick={handlePromote}>
-                promote
-              </Button>
-              <Button variant="on-color" onClick={handleNegotiate}>
-                negotiate
-              </Button>
-              <Button variant="on-color" onClick={handleSuspend}>
-                suspend
-              </Button>
-              <Button variant="on-color" onClick={handleFire}>
-                fire
-              </Button>
-            </div>
-          }
-          topContent={
-            <div className="flex justify-between w-full">
-              <p className="text-pixel" style={{ color: 'var(--color-gold)' }}>
-                TEAMS
-              </p>
-              <p className="text-pixel" style={{ color: 'var(--color-gold)' }}>
-                access
-              </p>
-            </div>
-          }
-          dropdownContent={
-            <div className="flex justify-between w-full">
-              <div className="flex items-center gap-[var(--space-xxs)] flex-wrap" style={{ maxWidth: '310px' }}>
-                {candidate.teams.map((t) => (
-                  <Button key={t} variant="color" className="!bg-[var(--color-gold)] !text-white">
-                    {t}
-                  </Button>
-                ))}
-                {candidate.access.map((a) => (
-                  <Button key={a} variant="color" className="!bg-[var(--color-gold)] !text-white">
-                    {a}
-                  </Button>
-                ))}
-                <Button variant="color" className="!bg-[var(--color-gold)]">
-                  add
-                </Button>
-              </div>
-              <div className="flex items-center gap-[var(--space-xxs)]">
-                <Button variant="color" className="!bg-[var(--color-gold)] !text-white">
-                  {candidate.accessLevel}
-                </Button>
-                <Button variant="color" className="!bg-[var(--color-gold)]">
-                  add
-                </Button>
-              </div>
-            </div>
-          }
+          actions={[
+            { label: 'promote', onClick: handlePromote },
+            { label: 'negotiate', onClick: handleNegotiate },
+            { label: 'suspend', onClick: handleSuspend },
+            { label: 'fire', onClick: handleFire },
+          ]}
         />
 
         {/* Hire/Reject Card */}
@@ -225,13 +176,30 @@ export default function CandidatePage() {
             >
               first work day
             </p>
-            <div className="flex items-center justify-between px-[var(--space-s)] h-[32px] bg-[var(--color-gray-light)] rounded-[var(--radius-sm)]" style={{ width: '140px' }}>
-              <span className="text-pixel" style={{ color: 'var(--color-gray-dark)' }}>
-                choose date
-              </span>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6L8 10L12 6" stroke="var(--color-gray-dark)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+            <div className="relative">
+              <button
+                onClick={() => setShowDatePicker(!showDatePicker)}
+                className="flex items-center justify-between px-[var(--space-s)] h-[32px] bg-[var(--color-gray-light)] rounded-[var(--radius-sm)] cursor-pointer hover:bg-[var(--color-gray-medium)] transition-colors"
+                style={{ width: '160px' }}
+              >
+                <span className="text-pixel" style={{ color: selectedDate ? 'var(--color-black)' : 'var(--color-gray-dark)' }}>
+                  {formatDate(selectedDate)}
+                </span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 6L8 10L12 6" stroke="var(--color-gray-dark)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              {showDatePicker && (
+                <div className="absolute top-[36px] left-0 z-50 bg-white rounded-[var(--radius-sm)] shadow-lg p-[var(--space-xs)]">
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    className="text-grotesk p-[var(--space-xs)] border border-[var(--color-gray-light)] rounded-[var(--radius-sm)]"
+                    min={new Date().toISOString().split('T')[0]}
+                  />
+                </div>
+              )}
             </div>
           </div>
           <div className="flex gap-[var(--space-xxs)]">
@@ -243,6 +211,23 @@ export default function CandidatePage() {
             </Button>
           </div>
         </div>
+
+        {/* Status Badge */}
+        {(candidate.status === 'hired' || candidate.status === 'rejected') && (
+          <div 
+            className="flex items-center gap-[var(--space-xs)] p-[var(--space-m)] rounded-[var(--radius-lg)]"
+            style={{
+              backgroundColor: candidate.status === 'hired' ? 'var(--color-mint)' : 'var(--color-coral)',
+            }}
+          >
+            <span className="text-h3">
+              {candidate.status === 'hired' 
+                ? `✓ Hired — First work day: ${formatDate(candidate.firstWorkDay || '')}`
+                : '✕ Rejected'
+              }
+            </span>
+          </div>
+        )}
 
         {/* Work Experience */}
         <div className="flex flex-col gap-[var(--space-l)] p-[var(--space-xl)] bg-[var(--color-white)] rounded-[var(--radius-lg)]">
@@ -275,7 +260,7 @@ export default function CandidatePage() {
         {/* Key Projects */}
         <div className="flex flex-col gap-[var(--space-l)] p-[var(--space-xl)] bg-[var(--color-white)] rounded-[var(--radius-lg)]">
           <h3 className="text-h2">Key projects</h3>
-          <div className="flex flex-col gap-[var(--space-xxs)]">
+          <div className="flex flex-col gap-[2px]">
             {candidate.keyProjects.map((project, index) => (
               <ProjectPreview
                 key={index}
@@ -287,53 +272,55 @@ export default function CandidatePage() {
         </div>
 
         {/* Assessment Results */}
-        <div className="flex flex-col gap-[var(--page-gap)] p-[var(--space-xl)] bg-[var(--color-white)] rounded-[var(--radius-lg)]">
-          <h3 className="text-h2">Assessment Results</h3>
-          <div className="flex gap-[var(--space-s)]">
-            <div className="flex-1 flex flex-col gap-[60px]">
-              {candidate.assessmentResults.slice(0, 2).map((result) => (
-                <div key={result.name} className="flex flex-col gap-[15px]">
-                  <div className="flex justify-between">
-                    <span className="text-bold">{result.name}</span>
-                    <span className="text-pixel">{result.value}%</span>
+        {candidate.assessmentResults.length > 0 && (
+          <div className="flex flex-col gap-[var(--page-gap)] p-[var(--space-xl)] bg-[var(--color-white)] rounded-[var(--radius-lg)]">
+            <h3 className="text-h2">Assessment Results</h3>
+            <div className="flex gap-[var(--space-s)]">
+              <div className="flex-1 flex flex-col gap-[60px]">
+                {candidate.assessmentResults.slice(0, 2).map((result) => (
+                  <div key={result.name} className="flex flex-col gap-[15px]">
+                    <div className="flex justify-between">
+                      <span className="text-bold">{result.name}</span>
+                      <span className="text-pixel">{result.value}%</span>
+                    </div>
+                    <Bar variant="default" progress={result.value} />
                   </div>
-                  <Bar variant="default" percentage={result.value} />
-                </div>
-              ))}
-            </div>
-            <div className="flex-1 flex flex-col gap-[60px]">
-              {candidate.assessmentResults.slice(2, 4).map((result) => (
-                <div key={result.name} className="flex flex-col gap-[15px]">
-                  <div className="flex justify-between">
-                    <span className="text-bold">{result.name}</span>
-                    <span className="text-pixel">{result.value}%</span>
+                ))}
+              </div>
+              <div className="flex-1 flex flex-col gap-[60px]">
+                {candidate.assessmentResults.slice(2, 4).map((result) => (
+                  <div key={result.name} className="flex flex-col gap-[15px]">
+                    <div className="flex justify-between">
+                      <span className="text-bold">{result.name}</span>
+                      <span className="text-pixel">{result.value}%</span>
+                    </div>
+                    <Bar variant="default" progress={result.value} />
                   </div>
-                  <Bar variant="default" percentage={result.value} />
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Interview History */}
-        <div className="flex flex-col gap-[var(--space-l)] p-[var(--space-xl)] bg-[var(--color-white)] rounded-[var(--radius-lg)] mb-[var(--page-gap)]">
-          <h3 className="text-h2">Interview History</h3>
-          <div className="flex gap-[var(--space-xxs)]">
-            {candidate.interviewHistory.map((interviewer, index) => (
-              <Profile
-                key={index}
-                name={interviewer.name}
-                role={interviewer.role}
-                variant="short"
-                avatarSrc="/assets/avatar-katya.png"
-                className={`!bg-[${interviewer.color}]`}
-                style={{ backgroundColor: interviewer.color }}
-              />
-            ))}
+        {candidate.interviewHistory.length > 0 && (
+          <div className="flex flex-col gap-[var(--space-l)] p-[var(--space-xl)] bg-[var(--color-white)] rounded-[var(--radius-lg)] mb-[var(--page-gap)]">
+            <h3 className="text-h2">Interview History</h3>
+            <div className="flex gap-[var(--space-xxs)]">
+              {candidate.interviewHistory.map((interviewer, index) => (
+                <Profile
+                  key={index}
+                  name={interviewer.name}
+                  role={interviewer.role}
+                  variant="short"
+                  avatarSrc="/assets/avatar-katya.png"
+                  style={{ backgroundColor: interviewer.color }}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </main>
   );
 }
-

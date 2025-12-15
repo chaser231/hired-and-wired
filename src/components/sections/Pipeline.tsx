@@ -1,80 +1,75 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Profile } from '../blocks/Profile';
+import { useCandidatesStore, CandidateStatus } from '@/lib/stores/candidatesStore';
 
-interface Candidate {
+interface PipelineCandidate {
   id: string;
   name: string;
   role: string;
   avatarSrc: string;
+  status: CandidateStatus;
 }
 
 interface PipelineColumn {
-  id: string;
+  id: CandidateStatus;
   title: string;
-  candidates: Candidate[];
+  candidates: PipelineCandidate[];
 }
 
 interface PipelineProps {
-  columns?: PipelineColumn[];
+  campaignId?: string;
   onCandidateClick?: (candidateId: string) => void;
   onColumnChange?: (candidateId: string, fromColumn: string, toColumn: string) => void;
   className?: string;
 }
 
-const defaultColumns: PipelineColumn[] = [
-  {
-    id: 'applied',
-    title: 'Applied',
-    candidates: [
-      { id: '1', name: 'Michael Thompson', role: 'Product Manager', avatarSrc: '/assets/avatar-katya.png' },
-      { id: '2', name: 'Emily Carter', role: 'UX Designer', avatarSrc: '/assets/avatar-katya.png' },
-      { id: '3', name: 'James Wilson', role: 'Data Analyst', avatarSrc: '/assets/avatar-katya.png' },
-      { id: '4', name: 'Olivia Brown', role: 'Marketing Specialist', avatarSrc: '/assets/avatar-katya.png' },
-    ],
-  },
-  {
-    id: 'screening',
-    title: 'Screening',
-    candidates: [
-      { id: '5', name: 'Michael Thompson', role: 'Project Manager', avatarSrc: '/assets/avatar-katya.png' },
-      { id: '6', name: 'Emily Davis', role: 'UX Designer', avatarSrc: '/assets/avatar-katya.png' },
-      { id: '7', name: 'David Garcia', role: 'Data Analyst', avatarSrc: '/assets/avatar-katya.png' },
-      { id: '8', name: 'Jessica Martinez', role: 'Marketing Specialist', avatarSrc: '/assets/avatar-katya.png' },
-      { id: '9', name: 'Daniel Lee', role: 'Systems Administrator', avatarSrc: '/assets/avatar-katya.png' },
-      { id: '10', name: 'Laura Wilson', role: 'Product Owner', avatarSrc: '/assets/avatar-katya.png' },
-    ],
-  },
-  {
-    id: 'interview',
-    title: 'Interview',
-    candidates: [
-      { id: '11', name: 'Michael Thompson', role: 'Product Manager', avatarSrc: '/assets/avatar-katya.png' },
-      { id: '12', name: 'Jessica Williams', role: 'UI/UX Designer', avatarSrc: '/assets/avatar-katya.png' },
-      { id: '13', name: 'David Brown', role: 'Data Scientist', avatarSrc: '/assets/avatar-katya.png' },
-    ],
-  },
-  {
-    id: 'offer',
-    title: 'Offer',
-    candidates: [
-      { id: '14', name: 'Sarah Mitchell', role: 'Senior Software Engineer', avatarSrc: '/assets/avatar-katya.png' },
-    ],
-  },
+const columnConfig: { id: CandidateStatus; title: string }[] = [
+  { id: 'applied', title: 'Applied' },
+  { id: 'screening', title: 'Screening' },
+  { id: 'interview', title: 'Interview' },
+  { id: 'offer', title: 'Offer' },
 ];
 
 export function Pipeline({
-  columns: initialColumns = defaultColumns,
+  campaignId,
   onCandidateClick,
   onColumnChange,
   className = '',
 }: PipelineProps) {
-  const [columns, setColumns] = useState<PipelineColumn[]>(initialColumns);
-  const [draggedCandidate, setDraggedCandidate] = useState<{ candidate: Candidate; fromColumnId: string } | null>(null);
+  const candidatesFromStore = useCandidatesStore((state) => 
+    campaignId ? state.getCandidatesByCampaign(campaignId) : state.candidates
+  );
+  const updateCandidate = useCandidatesStore((state) => state.updateCandidate);
+
+  // Build columns from store data
+  const buildColumns = (): PipelineColumn[] => {
+    return columnConfig.map((config) => ({
+      ...config,
+      candidates: candidatesFromStore
+        .filter((c) => c.status === config.id)
+        .map((c) => ({
+          id: c.id,
+          name: c.name,
+          role: c.role,
+          avatarSrc: c.avatarSrc || '/assets/avatar-katya.png',
+          status: c.status,
+        })),
+    }));
+  };
+
+  const [columns, setColumns] = useState<PipelineColumn[]>(buildColumns());
+  const [draggedCandidate, setDraggedCandidate] = useState<{ candidate: PipelineCandidate; fromColumnId: string } | null>(null);
   const [dropTargetColumnId, setDropTargetColumnId] = useState<string | null>(null);
 
-  const handleDragStart = (e: React.DragEvent, candidate: Candidate, columnId: string) => {
+  // Update columns when store changes
+  useEffect(() => {
+    setColumns(buildColumns());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [candidatesFromStore]);
+
+  const handleDragStart = (e: React.DragEvent, candidate: PipelineCandidate, columnId: string) => {
     setDraggedCandidate({ candidate, fromColumnId: columnId });
     e.dataTransfer.effectAllowed = 'move';
     // Set transparent drag image
@@ -118,25 +113,8 @@ export function Pipeline({
       return;
     }
 
-    // Update columns state
-    setColumns((prevColumns) => {
-      const newColumns = prevColumns.map((column) => {
-        if (column.id === fromColumnId) {
-          return {
-            ...column,
-            candidates: column.candidates.filter((c) => c.id !== candidate.id),
-          };
-        }
-        if (column.id === toColumnId) {
-          return {
-            ...column,
-            candidates: [...column.candidates, candidate],
-          };
-        }
-        return column;
-      });
-      return newColumns;
-    });
+    // Update candidate status in store
+    updateCandidate(candidate.id, { status: toColumnId as CandidateStatus });
 
     // Notify parent
     onColumnChange?.(candidate.id, fromColumnId, toColumnId);

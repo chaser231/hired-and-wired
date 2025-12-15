@@ -142,7 +142,7 @@ export default function CampaignPage() {
 
       {/* Pipeline Section - Full width with 30px padding */}
       <div className="w-full mt-[var(--page-gap)] pb-[var(--page-gap)] px-[var(--space-xl)]">
-        <Pipeline onCandidateClick={handleCandidateClick} />
+        <Pipeline campaignId={campaignId} onCandidateClick={handleCandidateClick} />
       </div>
     </main>
   );
