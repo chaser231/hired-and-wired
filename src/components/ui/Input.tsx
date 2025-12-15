@@ -26,7 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <div
           className={`
             flex items-center
-            px-[var(--space-s)] py-[var(--space-xs)]
+            px-[var(--space-s)] h-[32px]
             bg-[var(--color-gray-light)]
             rounded-[var(--radius-sm)]
             ${error ? 'ring-1 ring-[var(--color-error)]' : ''}
@@ -54,3 +54,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName = 'Input';
+

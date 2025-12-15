@@ -123,7 +123,7 @@ export default function HiringCampaignAddPage() {
       </div>
 
       {/* Content Container */}
-      <div className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[60px]">
+      <div className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[104px]">
         {/* CardTop Yellow - Hero Section */}
         <div
           className="relative overflow-hidden flex flex-col justify-center items-center h-[480px] p-[var(--space-xl)] rounded-[var(--radius-lg)]"

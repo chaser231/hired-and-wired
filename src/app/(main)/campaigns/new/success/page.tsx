@@ -3,15 +3,11 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui';
-import { useTeamsStore } from '@/lib/stores/teamsStore';
 
 export default function CampaignSuccessPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const teamId = searchParams.get('teamId') || '1';
-
-  const team = useTeamsStore((state) => state.getTeam(teamId));
-  const teamName = team?.name || 'Engineering team';
 
   const handleViewCampaigns = () => {
     router.push(`/teams/${teamId}`);
@@ -26,28 +22,15 @@ export default function CampaignSuccessPage() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen px-[var(--space-m)]">
-      {/* Success Card */}
-      <div
-        className="relative overflow-hidden flex flex-col items-center justify-center w-full max-w-[var(--content-width)] h-[580px] p-[var(--space-xl)] rounded-[var(--radius-lg)]"
-      >
-        {/* Background Image */}
-        <Image
-          src="/assets/card top.png"
-          alt="Success"
-          fill
-          className="object-cover"
-          priority
-        />
-
-        {/* Green Overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(to top, rgba(0, 134, 123, 0.95) 0%, rgba(0, 134, 123, 0.85) 50%, rgba(0, 134, 123, 0.7) 100%)',
-          }}
-        />
+    <main className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
+      {/* Full Screen Background Image */}
+      <Image
+        src="/assets/Rectangle 229 (1).png"
+        alt="Success background"
+        fill
+        className="object-cover"
+        priority
+      />
 
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center text-center gap-[var(--space-xxl)]">
@@ -111,7 +94,6 @@ export default function CampaignSuccessPage() {
             </div>
           </div>
         </div>
-      </div>
     </main>
   );
 }

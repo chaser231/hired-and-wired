@@ -36,7 +36,7 @@ function LabeledDropdown({
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between px-[var(--space-s)] py-[var(--space-xs)] bg-[var(--color-gray-light)] rounded-[var(--radius-sm)] text-pixel"
+          className="w-full flex items-center justify-between px-[var(--space-s)] h-[32px] bg-[var(--color-gray-light)] rounded-[var(--radius-sm)] text-pixel"
         >
           <span className={!selectedOption ? 'text-[var(--color-gray-dark)]' : ''}>
             {selectedOption?.label || placeholder || 'Select...'}
