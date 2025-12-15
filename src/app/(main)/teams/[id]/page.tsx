@@ -3,10 +3,38 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
-import { SwitchGroup } from '@/components/ui';
-import { Profile, Notify } from '@/components/blocks';
+import { SwitchGroup, Button } from '@/components/ui';
+import { Profile, Notify, CampaignPreview } from '@/components/blocks';
 import { SecondRow } from '@/components/sections';
 import { useTeamsStore } from '@/lib/stores/teamsStore';
+
+// Mock campaigns data for teams
+const mockCampaigns = [
+  {
+    id: '1',
+    title: 'Forward Architect',
+    status: 'green' as const,
+    stats: { applied: 45, rejected: 12, inProgress: 98, finalRound: 112, offersSent: 6 },
+  },
+  {
+    id: '2',
+    title: 'District Integration Engineer',
+    status: 'green' as const,
+    stats: { applied: 78, rejected: 7, inProgress: 89, finalRound: 34, offersSent: 1 },
+  },
+  {
+    id: '3',
+    title: 'Dynamic Program Liaison',
+    status: 'green' as const,
+    stats: { applied: 23, rejected: 678, inProgress: 8, finalRound: 90, offersSent: 45 },
+  },
+  {
+    id: '4',
+    title: 'Product Tactics Manager',
+    status: 'green' as const,
+    stats: { applied: 15, rejected: 5, inProgress: 167, finalRound: 90, offersSent: 2 },
+  },
+];
 
 export default function TeamDetailPage() {
   const router = useRouter();
@@ -42,6 +70,76 @@ export default function TeamDetailPage() {
       </main>
     );
   }
+
+  // Tab-specific content
+  const getNotifyMessage = () => {
+    if (activeTab === 1) {
+      return 'This month, the hiring funnel saw 250 applicants, 50 interviews, and 10 new hires.';
+    }
+    return team.weekHighlight;
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 0: // Team tab
+        return (
+          <div
+            className="flex flex-col gap-[var(--space-l)] p-[var(--space-xl)] rounded-[var(--radius-lg)]"
+            style={{ backgroundColor: 'var(--color-white)' }}
+          >
+            <h2 className="text-h2">Team</h2>
+            <div className="flex flex-col gap-[var(--space-xxxs)]">
+              {team.members.map((member, index) => (
+                <Profile
+                  key={member.id}
+                  name={member.name}
+                  role={member.role}
+                  avatarSrc={member.avatarSrc}
+                  variant="long"
+                  status={member.status}
+                  progress={member.progress}
+                  className={index === team.members.length - 1 ? 'border-b-0' : ''}
+                />
+              ))}
+            </div>
+          </div>
+        );
+
+      case 1: // Campaigns tab
+        return (
+          <>
+            {mockCampaigns.map((campaign) => (
+              <CampaignPreview
+                key={campaign.id}
+                title={campaign.title}
+                status={campaign.status}
+                stats={campaign.stats}
+                onMoreInfo={() => router.push(`/campaigns/${campaign.id}`)}
+              />
+            ))}
+          </>
+        );
+
+      case 2: // Access tab
+        return (
+          <div
+            className="flex flex-col gap-[var(--space-l)] p-[var(--space-xl)] rounded-[var(--radius-lg)]"
+            style={{ backgroundColor: 'var(--color-white)' }}
+          >
+            <h2 className="text-h2">Access Management</h2>
+            <p className="text-grotesk" style={{ color: 'var(--color-gray-dark)' }}>
+              Configure team access levels and permissions here.
+            </p>
+            <div className="flex gap-[var(--space-xs)]">
+              <Button variant="cta-small">manage access</Button>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <main className="flex flex-col items-center pb-[84px]">
@@ -97,6 +195,15 @@ export default function TeamDetailPage() {
                 : team.description
               }
             </p>
+
+            {/* Add Campaign button - only on Campaigns tab */}
+            {activeTab === 1 && (
+              <div className="mt-[var(--space-m)]">
+                <Button variant="cta-small" onClick={() => router.push('/campaigns/new')}>
+                  add campaign
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Switch Group */}
@@ -111,32 +218,10 @@ export default function TeamDetailPage() {
       {/* Content Section - 830px Width */}
       <section className="w-full max-w-[var(--content-width)] flex flex-col gap-[var(--section-gap)] mt-[var(--section-gap)]">
         {/* Notify Block */}
-        <Notify message={team.weekHighlight} />
+        <Notify message={getNotifyMessage()} />
 
-        {/* Team Section - White Card */}
-        <div
-          className="flex flex-col gap-[var(--space-l)] p-[var(--space-xl)] rounded-[var(--radius-lg)]"
-          style={{ backgroundColor: 'var(--color-white)' }}
-        >
-          {/* Title */}
-          <h2 className="text-h2">Team</h2>
-
-          {/* Team Members List */}
-          <div className="flex flex-col gap-[var(--space-xxxs)]">
-            {team.members.map((member, index) => (
-              <Profile
-                key={member.id}
-                name={member.name}
-                role={member.role}
-                avatarSrc={member.avatarSrc}
-                variant="long"
-                status={member.status}
-                progress={member.progress}
-                className={index === team.members.length - 1 ? 'border-b-0' : ''}
-              />
-            ))}
-          </div>
-        </div>
+        {/* Tab Content */}
+        {renderTabContent()}
       </section>
     </main>
   );
