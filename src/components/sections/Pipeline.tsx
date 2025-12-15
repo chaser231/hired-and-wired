@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Profile } from '../blocks/Profile';
 import { useCandidatesStore, CandidateStatus } from '@/lib/stores/candidatesStore';
 
@@ -38,13 +38,18 @@ export function Pipeline({
   onColumnChange,
   className = '',
 }: PipelineProps) {
-  const candidatesFromStore = useCandidatesStore((state) => 
-    campaignId ? state.getCandidatesByCampaign(campaignId) : state.candidates
-  );
+  // Get raw candidates array from store (stable reference)
+  const allCandidates = useCandidatesStore((state) => state.candidates);
   const updateCandidate = useCandidatesStore((state) => state.updateCandidate);
 
+  // Filter candidates by campaignId with useMemo to avoid new array on each render
+  const candidatesFromStore = useMemo(() => {
+    if (!campaignId) return allCandidates;
+    return allCandidates.filter((c) => c.campaignId === campaignId);
+  }, [allCandidates, campaignId]);
+
   // Build columns from store data
-  const buildColumns = (): PipelineColumn[] => {
+  const buildColumns = useCallback((): PipelineColumn[] => {
     return columnConfig.map((config) => ({
       ...config,
       candidates: candidatesFromStore
@@ -57,17 +62,16 @@ export function Pipeline({
           status: c.status,
         })),
     }));
-  };
+  }, [candidatesFromStore]);
 
-  const [columns, setColumns] = useState<PipelineColumn[]>(buildColumns());
+  const [columns, setColumns] = useState<PipelineColumn[]>([]);
   const [draggedCandidate, setDraggedCandidate] = useState<{ candidate: PipelineCandidate; fromColumnId: string } | null>(null);
   const [dropTargetColumnId, setDropTargetColumnId] = useState<string | null>(null);
 
   // Update columns when store changes
   useEffect(() => {
     setColumns(buildColumns());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [candidatesFromStore]);
+  }, [buildColumns]);
 
   const handleDragStart = (e: React.DragEvent, candidate: PipelineCandidate, columnId: string) => {
     setDraggedCandidate({ candidate, fromColumnId: columnId });
